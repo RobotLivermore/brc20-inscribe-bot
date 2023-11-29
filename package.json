@@ -11,7 +11,10 @@
   "dependencies": {
     "@cmdcode/crypto-utils": "^2.4.6",
     "@cmdcode/tapscript": "^1.4.3",
-    "next": "14.0.3",
+    "copy-text-to-clipboard": "^3.2.0",
+    "next": "13.5.6",
+    "node-fetch": "^3.3.2",
+    "qrcode.react": "^3.1.0",
     "react": "^18",
     "react-dom": "^18"
   },

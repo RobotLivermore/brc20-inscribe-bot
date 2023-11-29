@@ -12,5 +12,5 @@ export const fetchBrc20MintInscriptionAddress = async (tick: string, amt: number
     }
   });
   const data = await resp.json();
-  return data.inscriptionAddress;
+  return data?.data;
 }

@@ -3,16 +3,24 @@ import { NextRequest } from "next/server";
 export const runtime = "edge";
 
 export async function POST(req: NextRequest): Promise<any> {
-  console.log(await req.json());
-  // sleep 1s
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(1);
-    }, 1000);
-  });
-  return new Response(JSON.stringify({
-    inscriptionAddress: '0x1234567890'
-  }), {
+  const requestData = await req.json();
+  console.log(requestData)
+
+  // TODO: validate requestData
+
+  const resp = await fetch('http://127.0.0.1:8000/api/brc20/mint', {
+    method: 'POST',
+    body: JSON.stringify({
+      tick: requestData.tick,
+      amt: requestData.amt,
+      receive_address: requestData.receiveAddress,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  })
+  const data = await resp.json();
+  return new Response(JSON.stringify(data), {
     status: 200,
   })
 }

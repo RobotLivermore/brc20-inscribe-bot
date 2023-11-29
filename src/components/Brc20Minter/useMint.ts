@@ -12,8 +12,9 @@ const useMint = () => {
       }
       try {
         setIsMinting(true);
-        const inscriptionAddress = await fetchBrc20MintInscriptionAddress(tick, amount, receiveAddress);
-        console.log(inscriptionAddress);
+        const result = await fetchBrc20MintInscriptionAddress(tick, amount, receiveAddress);
+        console.log(result);
+        return result
       } catch (e) {
         console.error(e);
       } finally {
