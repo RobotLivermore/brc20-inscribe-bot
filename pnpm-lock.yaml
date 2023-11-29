@@ -1,6 +1,12 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  '@cmdcode/crypto-utils':
+    specifier: ^2.4.6
+    version: 2.4.6
+  '@cmdcode/tapscript':
+    specifier: ^1.4.3
+    version: 1.4.3
   next:
     specifier: 14.0.3
     version: 14.0.3(react-dom@18.0.0)(react@18.0.0)
@@ -53,6 +59,22 @@ packages:
     dependencies:
       regenerator-runtime: 0.14.0
     dev: true
+
+  /@cmdcode/buff-utils@2.0.0:
+    resolution: {integrity: sha512-hduPGB45//2hzpjuudhXrbTRWyD+sjcry/bmmYjh1+SOtiZl4AgRRaTDr5FuG1VVjgkoTFBtc5DmBj3x3PlmTA==}
+    dev: false
+
+  /@cmdcode/crypto-utils@2.4.6:
+    resolution: {integrity: sha512-wGPt9qaE+cxFFvyte+XXQPCkL3DWxPYO5O56ggEYMMSrUtnPpHLda/oFVJDHKMxA23dXv8rKi5QsZJh+6W3L6w==}
+    dependencies:
+      '@cmdcode/buff-utils': 2.0.0
+      '@noble/curves': 1.2.0
+      '@noble/hashes': 1.3.2
+    dev: false
+
+  /@cmdcode/tapscript@1.4.3:
+    resolution: {integrity: sha512-9vqeDZfPyuu1Px03ea/xt4E8/Wrmae6wayMnA0cIBhcygW3Rzci9qeIjgGltdGGSMA23cOOq10IjyL67TNkF+Q==}
+    dev: false
 
   /@eslint/eslintrc@1.4.1:
     resolution: {integrity: sha512-XXrH9Uarn0stsyldqDYq8r++mROmWRI1xKMXa640Bb//SY1+ECYX6VzT6Lcx5frD0V30XieqJ0oX9I2Xj5aoMA==}
@@ -206,6 +228,17 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /@noble/curves@1.2.0:
+    resolution: {integrity: sha512-oYclrNgRaM9SsBUBVbb8M6DTV7ZHRTKugureoYEncY5c65HOmRzvSiTE3y5CYaPYJA/GVkrhXEoF0M3Ya9PMnw==}
+    dependencies:
+      '@noble/hashes': 1.3.2
+    dev: false
+
+  /@noble/hashes@1.3.2:
+    resolution: {integrity: sha512-MVC8EAQp7MvEcm30KWENFjgR+Mkmf+D189XJTkFIlwohU5hcBbn1ZkKq7KVTi2Hme3PMGF390DaL52beVrIihQ==}
+    engines: {node: '>= 16'}
+    dev: false
 
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
