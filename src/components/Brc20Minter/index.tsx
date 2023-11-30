@@ -39,7 +39,7 @@ const Brc20Minter = () => {
     }
   };
   return (
-    <div className="flex flex-col w-full items-center'/.">
+    <div className="flex flex-col w-full items-center">
       <div className="max-w-xl flex flex-col w-full bg-white p-4 rounded-3xl">
         <h2 className="text-xl">BRC20 Minter</h2>
         <div className="flex flex-col mt-2">
