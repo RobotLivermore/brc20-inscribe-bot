@@ -7,7 +7,7 @@ export async function POST(req: NextRequest): Promise<any> {
 
   // TODO: validate requestData
 
-  const resp = await fetch('http://127.0.0.1:8000/api/brc20/mint/tasks/status', {
+  const resp = await fetch('http://54.242.228.134:8000/api/brc20/mint/tasks/status', {
     method: 'POST',
     body: JSON.stringify({
       ids: requestData.ids,
