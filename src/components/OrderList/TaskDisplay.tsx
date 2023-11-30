@@ -3,19 +3,38 @@
 import { QRCodeCanvas } from "qrcode.react";
 import Image from "next/image";
 import copy from "copy-text-to-clipboard";
-import { displaySixCharactersAround } from "./utils";
+import { displaySixCharactersAround } from "../Brc20Minter/utils";
+
+const formatStatus = (status: string) => {
+  if (status === "waiting_pay") {
+    return "待支付";
+  } else if (status === "waiting_mint") {
+    return "待支付";
+  } else if (status === "minted") {
+    return "铭刻成功"
+  } else if (status === "failed") {
+    return "超时失败"
+  } else if (status === "waiting_refund") {
+    return "等待退款"
+  } else if (status === 'refunded') {
+    return "已退款"
+  } else {
+    return status
+  }
+}
 
 interface Props {
   taskId: string;
   inscriptionAddress: string;
   fee: number;
+  status: string;
 }
 
-const TaskDisplay: React.FC<Props> = ({ taskId, inscriptionAddress, fee }) => {
+const TaskDisplay: React.FC<Props> = ({ taskId, inscriptionAddress, fee, status }) => {
   return (
-    <div className="flex flex-col justify-center bg-white my-2 py-4">
+    <div className="flex flex-col justify-center bg-white my-2 py-4 rounded-lg">
       <div className="flex px-4 justify-between">
-        <span>Task ID:</span>
+        <span>Order ID:</span>
         <span className="flex">
           <span>{displaySixCharactersAround(taskId)}</span>
           <Image
@@ -55,7 +74,9 @@ const TaskDisplay: React.FC<Props> = ({ taskId, inscriptionAddress, fee }) => {
         <div className=" pl-2 flex flex-col flex-grow">
           <span>转入金额:</span>
           <span>{Math.ceil(fee) / 100000000} BTC</span>
+          <div className="mt-2">订单状态：{formatStatus(status)}</div>
         </div>
+        
       </div>
     </div>
   );

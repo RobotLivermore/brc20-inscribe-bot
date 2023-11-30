@@ -2,10 +2,13 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import useLocalStorage from "@/hooks/useLocalstorage";
 import useMint from "./useMint";
-import TaskDisplay from './TaskDisplay'
+import TaskDisplay from "../OrderList/TaskDisplay";
+import { useRouter } from "next/navigation";
 
 const Brc20Minter = () => {
+  const router = useRouter();
   const { isMinting, onMint } = useMint();
 
   const [tick, setTick] = React.useState("");
@@ -13,17 +16,30 @@ const Brc20Minter = () => {
   const [to, setTo] = React.useState("");
   const [taskID, setTaskID] = React.useState("");
   const [inscriptionAddress, setInscriptionAddress] = useState("");
-  const [fee, setFee] = useState(0)
+  const [fee, setFee] = useState(0);
 
+  const [orderList, setOrderList] = useLocalStorage<any[]>("orderList", []);
+
+  const addOrderAndJumpToOrderList = (_taskId: string, _addr: string, _fee: number) => {
+    setOrderList([
+      {
+        taskId: _taskId,
+        inscriptionAddress: _addr,
+        fee: _fee,
+      },
+      ...orderList,
+    ]);
+    router.push("/orders");
+  };
 
   const handleMint = async () => {
     const reslut = await onMint(tick, Number(amt), to);
-    setTaskID(reslut?.taskId || '')
-    setInscriptionAddress(reslut?.inscriptionAddress || '')
-    setFee(reslut?.fee || 0)
+    if (reslut?.taskId) {
+      addOrderAndJumpToOrderList(reslut?.taskId, reslut?.inscriptionAddress, reslut?.fee);
+    }
   };
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full items-center'/.">
       <div className="max-w-xl flex flex-col w-full bg-white p-4 rounded-3xl">
         <h2 className="text-xl">BRC20 Minter</h2>
         <div className="flex flex-col mt-2">
@@ -66,7 +82,6 @@ const Brc20Minter = () => {
         </div>
       </div>
 
-      {inscriptionAddress && <TaskDisplay taskId={taskID} inscriptionAddress={inscriptionAddress} fee={fee} />}
     </div>
   );
 };
