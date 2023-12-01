@@ -7,9 +7,15 @@ dependencies:
   '@cmdcode/tapscript':
     specifier: ^1.4.3
     version: 1.4.3
+  '@types/crypto-js':
+    specifier: ^4.2.1
+    version: 4.2.1
   copy-text-to-clipboard:
     specifier: ^3.2.0
     version: 3.2.0
+  crypto-js:
+    specifier: ^4.2.0
+    version: 4.2.0
   next:
     specifier: 13.5.6
     version: 13.5.6(react-dom@18.0.0)(react@18.0.0)
@@ -278,6 +284,10 @@ packages:
     resolution: {integrity: sha512-E4KcWTpoLHqwPHLxidpOqQbcrZVgi0rsmmZXUle1jXmJfuIf/UWpczUJ7MZZ5tlxytgJXyp0w4PGkkeLiuIdZw==}
     dependencies:
       tslib: 2.6.2
+    dev: false
+
+  /@types/crypto-js@4.2.1:
+    resolution: {integrity: sha512-FSPGd9+OcSok3RsM0UZ/9fcvMOXJ1ENE/ZbLfOPlBWj7BgXtEAM8VYfTtT760GiLbQIMoVozwVuisjvsVwqYWw==}
     dev: false
 
   /@types/json5@0.0.29:
@@ -684,6 +694,10 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
+
+  /crypto-js@4.2.0:
+    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    dev: false
 
   /cssesc@3.0.0:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
