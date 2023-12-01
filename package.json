@@ -11,6 +11,7 @@
   "dependencies": {
     "@cmdcode/crypto-utils": "^2.4.6",
     "@cmdcode/tapscript": "^1.4.3",
+    "@headlessui/react": "^1.7.17",
     "@types/crypto-js": "^4.2.1",
     "copy-text-to-clipboard": "^3.2.0",
     "crypto-js": "^4.2.0",

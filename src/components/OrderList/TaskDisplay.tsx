@@ -11,26 +11,33 @@ const formatStatus = (status: string) => {
   } else if (status === "waiting_mint") {
     return "待支付";
   } else if (status === "minted") {
-    return "铭刻成功"
+    return "铭刻成功";
   } else if (status === "failed") {
-    return "超时失败"
+    return "超时失败";
   } else if (status === "waiting_refund") {
-    return "等待退款"
-  } else if (status === 'refunded') {
-    return "已退款"
+    return "等待退款";
+  } else if (status === "refunded") {
+    return "已退款";
   } else {
-    return status
+    return status;
   }
-}
+};
 
 interface Props {
   taskId: string;
   inscriptionAddress: string;
   fee: number;
   status: string;
+  onOpenWallet: (address: string, satsAmount: number) => void;
 }
 
-const TaskDisplay: React.FC<Props> = ({ taskId, inscriptionAddress, fee, status }) => {
+const TaskDisplay: React.FC<Props> = ({
+  taskId,
+  inscriptionAddress,
+  fee,
+  status,
+  onOpenWallet,
+}) => {
   return (
     <div className="flex flex-col justify-center bg-white my-2 py-4 rounded-lg">
       <div className="flex px-4 justify-between">
@@ -75,8 +82,18 @@ const TaskDisplay: React.FC<Props> = ({ taskId, inscriptionAddress, fee, status 
           <span>转入金额:</span>
           <span>{Math.ceil(fee) / 100000000} BTC</span>
           <div className="mt-2">订单状态：{formatStatus(status)}</div>
+          <div className="flex-grow" />
+          {status === "waiting_pay" && (
+            <div
+              className="border py-1 flex justify-center rounded-full"
+              onClick={() => {
+                onOpenWallet(inscriptionAddress, fee);
+              }}
+            >
+              打开钱包
+            </div>
+          )}
         </div>
-        
       </div>
     </div>
   );
