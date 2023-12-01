@@ -1,11 +1,11 @@
-import Login from "@/components/Login";
+import Brc20Minter from '@/components/Brc20Minter'
 import Navigator from "@/components/Navigator";
 
 
-export default function Home() {
+export default function Inscribe() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-4 bg-gray-100 !pb-20">
-      <Login />
+      <Brc20Minter />
       <Navigator />
     </main>
   );
