@@ -48,7 +48,7 @@ const WalletSelectModal: React.FC<Props> = ({ visible, onClose }) => {
                   <Link
                     href="okx://main"
                     target="_blank"
-                    className="flex bg-black py-1 px-2 justify-center w-64 rounded-full"
+                    className="flex bg-black py-2 px-2 justify-center w-64 rounded-full"
                   >
                     <Image src="/okx.svg" alt="okx" width={20} height={20} />
                     <span className="text-white ml-2">OKX Wallet</span>
@@ -56,7 +56,7 @@ const WalletSelectModal: React.FC<Props> = ({ visible, onClose }) => {
                   <Link
                     href="https://t.me/wallet"
                     target="_blank"
-                    className="flex bg-[#54a9eb] py-1 px-2 justify-center w-64 rounded-full"
+                    className="flex bg-[#54a9eb] py-2 px-2 justify-center w-64 rounded-full"
                   >
                     <Image src="/telegram.svg" alt="telegram" width={20} height={20} />
                     <span className="text-white ml-2">Telegram Wallet</span>

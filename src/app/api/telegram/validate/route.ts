@@ -5,7 +5,7 @@ export const runtime = "edge";
 
 const botToken = process.env.TELEGRAM_BOT_TOKEN;
 
-export const verifyTelegramWebAppData = async (
+const verifyTelegramWebAppData = async (
   telegramInitData: string,
   botToken: string
 ): Promise<boolean> => {
