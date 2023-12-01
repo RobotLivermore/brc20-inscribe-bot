@@ -1,4 +1,4 @@
 {
-  "editor.inlineSuggest.showToolbar": "always",
+  "editor.inlineSuggest.showToolbar": "onHover",
   "svg.preview.background": "white"
 }

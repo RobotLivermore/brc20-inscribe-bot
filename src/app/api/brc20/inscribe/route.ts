@@ -5,8 +5,6 @@ import { broardTx } from "@/server/btc";
 
 import { keys } from "@cmdcode/crypto-utils";
 
-export const runtime = "edge";
-
 /*
 铭刻过程
 */

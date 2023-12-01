@@ -1,6 +1,5 @@
 import { NextRequest } from "next/server";
 
-export const runtime = "edge";
 
 export async function POST(req: NextRequest): Promise<any> {
   const requestData = await req.json();

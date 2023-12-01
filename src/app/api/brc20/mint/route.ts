@@ -1,13 +1,12 @@
 import { NextRequest } from "next/server";
 
-// export const runtime = "edge";
 
 export async function POST(req: NextRequest): Promise<any> {
   const requestData = await req.json();
 
   // TODO: validate requestData
 
-  const baseUrl = "http://54.242.228.134:8000"
+  const baseUrl = process.env.ALPHA_BOT_URL
 
   if (!baseUrl) {
     throw new Error('ALPHA_BOT_URL not found')
