@@ -7,7 +7,7 @@ export async function POST(req: NextRequest): Promise<any> {
 
   // TODO: validate requestData
 
-  const baseUrl = process.env.ALPHA_BOT_URL
+  const baseUrl = "http://54.242.228.134:8000"
 
   if (!baseUrl) {
     throw new Error('ALPHA_BOT_URL not found')
