@@ -1,8 +1,6 @@
 import { NextRequest } from "next/server";
 import CryptoJS from "crypto-js";
 
-export const runtime = "edge";
-
 const botToken = process.env.TELEGRAM_BOT_TOKEN;
 
 const verifyTelegramWebAppData = async (
