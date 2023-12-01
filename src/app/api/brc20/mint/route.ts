@@ -4,11 +4,16 @@ export const runtime = "edge";
 
 export async function POST(req: NextRequest): Promise<any> {
   const requestData = await req.json();
-  console.log(requestData)
 
   // TODO: validate requestData
 
-  const resp = await fetch('http://54.242.228.134:8000/api/brc20/mint', {
+  const baseUrl = process.env.ALPHA_BOT_URL
+
+  if (!baseUrl) {
+    throw new Error('ALPHA_BOT_URL not found')
+  }
+
+  const resp = await fetch(`${baseUrl}/api/brc20/mint`, {
     method: 'POST',
     body: JSON.stringify({
       tick: requestData.tick,
