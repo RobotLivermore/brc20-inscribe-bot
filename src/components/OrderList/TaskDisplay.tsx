@@ -45,7 +45,7 @@ const TaskDisplay: React.FC<Props> = ({
         <span className="flex">
           <span>{displaySixCharactersAround(taskId)}</span>
           <Image
-            src="/icon/outline/copy.svg"
+            src="/assets/icon/outline/copy.svg"
             className="mx-1"
             width={16}
             height={16}
@@ -67,7 +67,7 @@ const TaskDisplay: React.FC<Props> = ({
           <span className="flex justify-center">
             {displaySixCharactersAround(inscriptionAddress, 6, 4)}
             <Image
-              src="/icon/outline/copy.svg"
+              src="/assets/icon/outline/copy.svg"
               className="mx-1"
               width={14}
               height={14}

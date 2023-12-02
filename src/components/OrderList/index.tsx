@@ -22,7 +22,7 @@ const OrderList: React.FC = () => {
   console.log(isWalletSelect)
 
   return (
-    <div className="flex flex-col pt-8 w-full">
+    <div className="flex flex-col pt-8 w-full text-black">
       <div className="fixed top-0 left-0 right-0 py-2 px-4 w-full bg-white font-bold border-b border-gray-200">
         历史订单
       </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
-import "./globals.css";
+import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,15 +12,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: any;
 }) {
   return (
-    <html lang="en">
+    <html lang={params?.lang || 'en'}>
       <head>
         <Script
           async
-          src="https://telegram.org/js/telegram-web-app.js"
+          src="/assets/telegram-web-app.js"
           strategy="beforeInteractive"
         />
       </head>

@@ -39,13 +39,13 @@ const Brc20Minter = () => {
     }
   };
   return (
-    <div className="flex flex-col w-full items-center">
+    <div className="flex flex-col w-full items-center text-black">
       <div className="max-w-xl flex flex-col w-full bg-white p-4 rounded-3xl">
         <h2 className="text-xl">BRC20 Minter</h2>
         <div className="flex flex-col mt-2">
           <span className="mb-1 text-xs">币种（tick）</span>
           <input
-            className="border border-slate-300 px-2 py-1 rounded"
+            className="border border-slate-300 bg-transparent px-2 py-1 rounded"
             onChange={(e) => {
               setTick(e.target.value);
             }}
@@ -54,7 +54,7 @@ const Brc20Minter = () => {
         <div className="flex flex-col mt-2">
           <span className="mb-1 text-xs">铸造数量（amt）</span>
           <input
-            className="border border-slate-300 px-2 py-1 rounded"
+            className="border border-slate-300 bg-transparent px-2 py-1 rounded"
             onChange={(e) => {
               setAmt(e.target.value);
             }}
@@ -63,7 +63,7 @@ const Brc20Minter = () => {
         <div className="flex flex-col mt-2">
           <span className="mb-1 text-xs">接收地址（to）</span>
           <input
-            className="border border-slate-300 px-2 py-1 rounded"
+            className="border border-slate-300 bg-transparent px-2 py-1 rounded"
             onChange={(e) => {
               setTo(e.target.value);
             }}
@@ -71,7 +71,7 @@ const Brc20Minter = () => {
         </div>
         <div className="flex flex-col py-3 ">
           <button
-            className="bg-black py-1.5 text-white rounded flex justify-center items-center"
+            className="bg-black py-1.5 text-white bg-transparent rounded flex justify-center items-center"
             onClick={handleMint}
           >
             {isMinting && (

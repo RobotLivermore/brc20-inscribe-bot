@@ -50,7 +50,7 @@ const WalletSelectModal: React.FC<Props> = ({ visible, onClose }) => {
                     target="_blank"
                     className="flex bg-black py-2 px-2 justify-center w-64 rounded-full"
                   >
-                    <Image src="/okx.svg" alt="okx" width={20} height={20} />
+                    <Image src="/assets/okx.svg" alt="okx" width={20} height={20} />
                     <span className="text-white ml-2">OKX Wallet</span>
                   </Link>
                   <Link
@@ -58,7 +58,7 @@ const WalletSelectModal: React.FC<Props> = ({ visible, onClose }) => {
                     target="_blank"
                     className="flex bg-[#54a9eb] py-2 px-2 justify-center w-64 rounded-full"
                   >
-                    <Image src="/telegram.svg" alt="telegram" width={20} height={20} />
+                    <Image src="/assets/telegram.svg" alt="telegram" width={20} height={20} />
                     <span className="text-white ml-2">Telegram Wallet</span>
                   </Link>
                   {/* <input value={url} onChange={(e) => setUrl(e.target.value)} type="text" placeholder="okx" className="border" />

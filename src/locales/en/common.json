@@ -1,0 +1,6 @@
+{
+  "wallet": {
+    "create": "Create new Wallet",
+    "restore": "Restore Wallet"
+  }
+}
