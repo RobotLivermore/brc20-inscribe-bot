@@ -1,4 +1,4 @@
-export function displaySixCharactersAround(text: string, front = 6, back = 6) {
+export function abbreviateText(text: string, front = 6, back = 6) {
   if (text.length <= front + back) {
     return text; // 如果字符串长度小于等于12，直接返回整个字符串
   }

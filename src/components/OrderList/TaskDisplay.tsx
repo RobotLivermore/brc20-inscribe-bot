@@ -3,7 +3,7 @@
 import { QRCodeCanvas } from "qrcode.react";
 import Image from "next/image";
 import copy from "copy-text-to-clipboard";
-import { displaySixCharactersAround } from "../Brc20Minter/utils";
+import { abbreviateText } from '@/utils/formater'
 
 const formatStatus = (status: string) => {
   if (status === "waiting_pay") {
@@ -43,7 +43,7 @@ const TaskDisplay: React.FC<Props> = ({
       <div className="flex px-4 justify-between">
         <span>Order ID:</span>
         <span className="flex">
-          <span>{displaySixCharactersAround(taskId)}</span>
+          <span>{abbreviateText(taskId)}</span>
           <Image
             src="/assets/icon/outline/copy.svg"
             className="mx-1"
@@ -65,7 +65,7 @@ const TaskDisplay: React.FC<Props> = ({
         >
           <QRCodeCanvas value={inscriptionAddress} />
           <span className="flex justify-center">
-            {displaySixCharactersAround(inscriptionAddress, 6, 4)}
+            {abbreviateText(inscriptionAddress, 6, 4)}
             <Image
               src="/assets/icon/outline/copy.svg"
               className="mx-1"

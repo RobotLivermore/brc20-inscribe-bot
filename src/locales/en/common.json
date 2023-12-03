@@ -1,4 +1,8 @@
 {
+  "common": {
+    "cancel": "Cancel",
+    "copySuccess": "Copied"
+  },
   "wallet": {
     "createOrRestore": "Create or Restore Wallet",
     "createWalletTips": "Please ensure that your wallet is created by yourself, and we will not store your wallet information.",
@@ -16,6 +20,10 @@
     "copyToClipboard": "Copy to clipboard",
     "copiedToClipboard": "Copied",
     "passwordNotMatch": "Password does not match",
-    "passwordAtLeast": "Password must be at least 8 characters"
+    "passwordAtLeast": "Password must be at least 8 characters",
+    "homeTitle": "BTC Balance",
+    "send": "Send",
+    "receive": "Receive",
+    "receiveTips": "Only send BTC and Ordinals NFTs to this wallet."
   }
 }

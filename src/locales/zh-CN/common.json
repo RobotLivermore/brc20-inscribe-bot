@@ -1,4 +1,8 @@
 {
+  "common": {
+    "cancel": "取消",
+    "copySuccess": "复制成功"
+  },
   "wallet": {
     "createOrRestore": "创建或恢复钱包",
     "createWalletTips": "请确保您的钱包是由您自己创建的，我们不会保存您的钱包信息",
@@ -16,6 +20,10 @@
     "copyToClipboard": "点击复制",
     "copiedToClipboard": "复制成功",
     "passwordNotMatch": "两次输入的密码不一致",
-    "passwordAtLeast": "密码至少8位"
+    "passwordAtLeast": "密码至少8位",
+    "homeTitle": "BTC余额",
+    "send": "发送",
+    "receive": "接收",
+    "receiveTips": "此地址仅能接受BTC及Ordinals资产"
   }
 }

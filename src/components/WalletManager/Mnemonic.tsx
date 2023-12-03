@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { generateMnemonic, mnemonicToSeed } from "bip39";
+import { generateMnemonic } from "bip39";
 import toast, { Toaster } from 'react-hot-toast';
 import useThrottleFn from "@/hooks/useThrottleFn";
-
+import copy from "copy-text-to-clipboard";
 
 const MnemonicDisplay: React.FC<{ mnemonic: string }> = ({ mnemonic }) => {
   const wordList = mnemonic.split(" ");
@@ -61,7 +61,7 @@ const Mnemonic: React.FC<Props> = ({ onConfirm }) => {
       <button
         className="btn btn-outline border-black rounded-full text-black flex justify-center mt-4 text-sm"
         onClick={() => {
-          navigator.clipboard.writeText(mnemonic);
+          copy(mnemonic);
           notify();
         }}
       >

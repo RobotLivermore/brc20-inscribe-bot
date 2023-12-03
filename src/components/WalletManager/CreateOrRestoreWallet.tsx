@@ -7,7 +7,7 @@ import SetPassword from "./SetPassword";
 import ConfirmMnemonic from "./ConfirmMnemonic";
 import Mnemonic from "./Mnemonic";
 import RestoreMnemonic from "./RestoreMnemonic";
-import { encrypt } from '@/utils/browser-passworder'
+import { generateWalletCore } from '@/utils/address'
 
 interface Props {
   onFinishCreateWallet: (w: WalletCore) => void;
@@ -30,10 +30,17 @@ const CreateOrRestoreWallet: FC<Props> = ({ onFinishCreateWallet }) => {
     );
   }, []);
 
-  const handleChangeTempMnemonic = useCallback((tm: string) => {
-    setTempMnemonic(tm);
-    saveTempMnemonic(tm);
-  }, [saveTempMnemonic]);
+  const clearTempMnemonic = useCallback(() => {
+    localStorage.removeItem("tempMnemonic");
+  }, []);
+
+  const handleChangeTempMnemonic = useCallback(
+    (tm: string) => {
+      setTempMnemonic(tm);
+      saveTempMnemonic(tm);
+    },
+    [saveTempMnemonic]
+  );
 
   const onCreateNewWallet = useCallback(() => {
     setSource("create");
@@ -62,26 +69,15 @@ const CreateOrRestoreWallet: FC<Props> = ({ onFinishCreateWallet }) => {
   );
 
   const onConfirmMnemonic = async () => {
-    const payload = await encrypt(password, tempMnemonic)
-
-    const newWallet = {
-      encryptedSeed: payload,
-      taprootAddress: "111",
-      publicKey: "11",
-    } as WalletCore;
+    clearTempMnemonic();
+    const newWallet = await generateWalletCore(tempMnemonic, password)
     onFinishCreateWallet(newWallet);
   };
 
   const onConfirmRestoreMnemonic = async (mnemonic: string) => {
-    const payload = await encrypt(password, mnemonic)
-
-    const newWallet = {
-      encryptedSeed: payload,
-      taprootAddress: "111",
-      publicKey: "11",
-    } as WalletCore;
+    const newWallet = await generateWalletCore(mnemonic, password)
     onFinishCreateWallet(newWallet);
-  }
+  };
 
   if (page === "init") {
     return (
