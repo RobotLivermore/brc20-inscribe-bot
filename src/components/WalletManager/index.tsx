@@ -18,14 +18,14 @@ const WalletManager: FC = () => {
   const hasWallet = Boolean(wallet);
   return (
     <>
-      {/* {hasWallet && <WalletOperator wallet={wallet as WalletCore} />} */}
-      {!hasWallet && (
+      {hasWallet && <WalletOperator wallet={wallet as WalletCore} />}
+      {/* {!hasWallet && (
         <CreateOrRestoreWallet
           onFinishCreateWallet={(w) => {
             setWallet(w);
           }}
         />
-      )}
+      )} */}
     </>
   );
 };
