@@ -19,13 +19,13 @@ const WalletManager: FC = () => {
   return (
     <>
       {hasWallet && <WalletOperator wallet={wallet as WalletCore} />}
-      {/* {!hasWallet && (
+      {!hasWallet && (
         <CreateOrRestoreWallet
           onFinishCreateWallet={(w) => {
             setWallet(w);
           }}
         />
-      )} */}
+      )}
     </>
   );
 };
