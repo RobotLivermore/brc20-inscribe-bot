@@ -13,7 +13,7 @@ export default async function Home({ params: { lang } }: any) {
       locale={lang}
       resources={resources}
     >
-      <main className="flex min-h-screen flex-col items-center p-4 bg-gray-100 !pt-12 !pb-20">
+      <main className="flex min-h-screen flex-col items-center p-4 bg-gray-100 !pt-20 !pb-20">
         <Login />
         <Navigator />
       </main>
