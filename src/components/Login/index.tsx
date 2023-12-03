@@ -32,7 +32,7 @@ const Login: FC = () => {
         <LanguageChanger />
       </div>
 
-      {/* <WalletManager /> */}
+      <WalletManager />
     </>
   );
 };
