@@ -71,11 +71,11 @@ const Brc20Minter = () => {
         </div>
         <div className="flex flex-col py-3 ">
           <button
-            className="bg-black py-1.5 text-white bg-transparent rounded flex justify-center items-center"
+            className="bg-black py-1.5 text-white rounded flex justify-center items-center"
             onClick={handleMint}
           >
             {isMinting && (
-              <Image src="/loading.svg" width={20} height={20} alt="loading" />
+              <Image src="/assets/loading.svg" width={20} height={20} alt="loading" />
             )}
             确认
           </button>
