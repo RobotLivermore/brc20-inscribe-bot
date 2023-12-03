@@ -1,6 +1,21 @@
 {
   "wallet": {
+    "createOrRestore": "创建或恢复钱包",
+    "createWalletTips": "请确保您的钱包是由您自己创建的，我们不会保存您的钱包信息",
     "create": "新建钱包",
-    "restore": "恢复钱包"
+    "restore": "恢复钱包",
+    "createPassword": "新建密码",
+    "passwordTips": "请妥善保管您的密码，我们不会保存您的密码，一旦您的密码丢失，将无法解锁您的钱包。",
+    "password": "密码",
+    "confirmPassword": "输入密码",
+    "next": "下一步",
+    "back": "返回",
+    "secretRecoveryphrase": "助记词",
+    "mnemonicTips": "助记词是您的钱包的唯一凭证，如果您丢失了助记词，将无法恢复您的钱包，请妥善保管。",
+    "mnemonicTips2": "请按顺序将您的助记词抄写在纸上，并妥善保管。",
+    "copyToClipboard": "点击复制",
+    "copiedToClipboard": "复制成功",
+    "passwordNotMatch": "两次输入的密码不一致",
+    "passwordAtLeast": "密码至少8位"
   }
 }

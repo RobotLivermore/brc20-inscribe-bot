@@ -1,6 +1,21 @@
 {
   "wallet": {
+    "createOrRestore": "Create or Restore Wallet",
+    "createWalletTips": "Please ensure that your wallet is created by yourself, and we will not store your wallet information.",
     "create": "Create new Wallet",
-    "restore": "Restore Wallet"
+    "restore": "Restore Wallet",
+    "createPassword": "Create Password",
+    "passwordTips": "Please keep your password safe as we do not store it. If you lose your password, you will be unable to unlock your wallet.",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "next": "Next",
+    "back": "Back",
+    "secretRecoveryphrase": "Secret Recovery Phrase",
+    "mnemonicTips": "This is the only way to restore your wallet. Please keep it safe and do not share it with anyone.",
+    "mnemonicTips2": "Store it somewhere safe and secret. If you lose it, you will lose access to your wallet.",
+    "copyToClipboard": "Copy to clipboard",
+    "copiedToClipboard": "Copied",
+    "passwordNotMatch": "Password does not match",
+    "passwordAtLeast": "Password must be at least 8 characters"
   }
 }

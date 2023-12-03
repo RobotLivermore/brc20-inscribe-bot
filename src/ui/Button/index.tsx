@@ -1,5 +1,5 @@
-
-import React, { FC } from 'react'
+import React, { FC } from "react";
+import { twMerge } from "tailwind-merge";
 
 // button component using tailwind
 /**
@@ -7,20 +7,30 @@ import React, { FC } from 'react'
  */
 
 interface Props {
-  text: string
-  onClick?: () => void
-  className?: string
+  theme: "primay" | "outline";
+  text: string;
+  disabled?: boolean;
+  onClick?: () => void;
+  className?: string;
 }
 
-const Button: FC<Props> = ({ text, onClick, className }) => {
+const Button: FC<Props> = ({ theme, text, onClick, className, disabled }) => {
+  const cls = twMerge(
+    theme === "primay"
+      ? "bg-black text-white disabled:bg-gray-300"
+      : "bg-white text-black disabled:text-gray-300 border border-black disabled:border-gray-300",
+    "flex justify-center items-center",
+    "disabled:cursor-not-allowed ",
+    "rounded-full ",
+    "py-3 ",
+    "hover:scale-[1.01] active:scale-[0.98] disabled:hover:scale-100 transition-all",
+    className
+  );
   return (
-    <button
-      className={`bg-black py-1.5 text-white rounded flex justify-center items-center ${className} rounded-full`}
-      onClick={onClick}
-    >
+    <button className={cls} onClick={onClick} disabled={disabled}>
       {text}
     </button>
-  )
-}
+  );
+};
 
-export default Button
+export default Button;

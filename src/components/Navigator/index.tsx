@@ -3,7 +3,9 @@ import Link from "next/link";
 
 const Navigator: React.FC = () => {
   return (
-    <div className="fixed bottom-0 left-0 right-0 h-14 bg-black text-white grid grid-cols-3 justify-center">
+    <div className="fixed bottom-0 left-0 right-0 h-14 bg-black text-white grid justify-center" style={{
+      gridTemplateColumns: "repeat(3, minmax(0, 1fr))"
+    }}>
       <Link href="/" className="flex flex-col justify-center items-center pt-2">
         <Image src="/assets/icon/outline/home.svg" width={20} height={20} alt="inscribe" className=" invert" />
         <span className="text-center text-xs mt-1">Home</span>
