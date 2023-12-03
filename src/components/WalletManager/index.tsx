@@ -11,6 +11,9 @@ const WalletManager: FC = () => {
     "localWallet",
     null
   );
+  if (wallet?.publicKey && wallet?.publicKey.length < 64) {
+    setWallet(null)
+  }
 
   const hasWallet = Boolean(wallet);
   return (
