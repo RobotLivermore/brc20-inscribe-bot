@@ -38,7 +38,7 @@ export default function LanguageChanger() {
   };
 
   return (
-    <select onChange={handleChange} value={currentLocale} className="bg-transparent text-black">
+    <select onChange={handleChange} value={currentLocale} className="bg-white text-black">
       <option value="en">English</option>
       <option value="zh-CN">简体中文</option>
     </select>
