@@ -16,7 +16,7 @@ const Login: FC = () => {
 
   return (
     <>
-      <div className="fixed flex justify-between top-0 left-0 right-0 py-2 h-16 px-4 w-full bg-white font-bold border-b border-black">
+      <div className="fixed flex justify-between items-center top-0 left-0 right-0 py-2 h-16 px-4 w-full bg-white font-bold border-b border-black">
         {initDataUnsafe?.user && (
           <div className="flex justify-between py-2">
             {initDataUnsafe?.user?.photo_url ? (
