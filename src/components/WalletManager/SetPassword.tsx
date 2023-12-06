@@ -57,7 +57,7 @@ const SetPassword: FC<Props> = ({ onBack, onNext }) => {
       />
       <p className="mt-2 min-h-[20px] text-red-700 text-sm">{errorTips}</p>
       <Button
-        theme="primay"
+        theme="primary"
         className="mt-4"
         text={t("wallet.next")}
         onClick={() => {

@@ -11,6 +11,18 @@ export const generateAddressFromPubKey = (pubkey: string, network?: 'main' | 'te
   return address;
 }
 
+export const getPrivFromMnemonic = (mnemonic: string) => {
+  const seed = mnemonicToSeedSync(mnemonic, "");
+  console.log("seed", seed.toString("hex"));
+  const hdWallet = HDKey.fromMasterSeed(seed);
+  // "m/86'/0'/0'/0/0"
+  const root = hdWallet.derive("m/86'/0'/0'/0/0");
+
+  const seckey = keys.get_seckey(root.privateKey as Uint8Array);
+
+  return seckey.to_hex();
+}
+
 export const generateWalletCore = async (
   mnemonic: string,
   password: string,

@@ -20,7 +20,7 @@ const SelectSource: FC<Props> = ({ onCreateNewWallet, onRestoreWallet }) => {
           {t('wallet.createWalletTips')}
         </p>
         <div className="flex flex-col mt-4 w-full">
-          <Button theme="primay" text={t('wallet.create')} onClick={onCreateNewWallet} className="py-3" />
+          <Button theme="primary" text={t('wallet.create')} onClick={onCreateNewWallet} className="py-3" />
           <Button theme="outline" text={t('wallet.restore')} onClick={onRestoreWallet} className="mt-2" />
         </div>
       </div>

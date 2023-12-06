@@ -1,5 +1,6 @@
 {
   "common": {
+    "confirm": "确认",
     "cancel": "取消",
     "copySuccess": "复制成功"
   },
@@ -24,6 +25,18 @@
     "homeTitle": "BTC余额",
     "send": "发送",
     "receive": "接收",
-    "receiveTips": "此地址仅能接受BTC及Ordinals资产"
+    "receiveTips": "此地址仅能接受BTC及Ordinals资产",
+    "receipientAddress": "接收地址",
+    "balance": "余额",
+    "available": "可用余额",
+    "amount": "数量",
+    "fee": "手续费",
+    "slow": "慢",
+    "fast": "快",
+    "average": "中",
+    "signTransaction": "签名交易",
+    "sendSuccess": "发送成功",
+    "sendFailed": "发送失败, 请稍后再试",
+    "spendAmount": "花费金额"
   }
 }

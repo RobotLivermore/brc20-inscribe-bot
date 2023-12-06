@@ -1,5 +1,6 @@
 {
   "common": {
+    "confirm": "Confirm",
     "cancel": "Cancel",
     "copySuccess": "Copied"
   },
@@ -24,6 +25,18 @@
     "homeTitle": "BTC Balance",
     "send": "Send",
     "receive": "Receive",
-    "receiveTips": "Only send BTC and Ordinals NFTs to this wallet."
+    "receiveTips": "Only send BTC and Ordinals NFTs to this wallet.",
+    "receipientAddress": "Receipient Address",
+    "balance": "Balance",
+    "available": "Available(safe to send)",
+    "amount": "Amount",
+    "fee": "Fee",
+    "slow": "Slow",
+    "fast": "Fast",
+    "average": "Average",
+    "signTransaction": "Sign Transaction",
+    "sendSuccess": "Send Success",
+    "sendFailed": "Send Failed, please try again later",
+    "spendAmount": "Spend Amount"
   }
 }

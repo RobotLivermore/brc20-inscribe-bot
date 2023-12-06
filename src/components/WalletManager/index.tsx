@@ -1,18 +1,46 @@
 "use client";
 
-import useLocalStorage from "@/hooks/useLocalstorage";
-import React, { FC } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { WalletCore } from "@/types/wallet";
 import CreateOrRestoreWallet from "./CreateOrRestoreWallet";
 import WalletOperator from "./WalletOperator";
 
 const WalletManager: FC = () => {
-  const [wallet, setWallet] = useLocalStorage<WalletCore | null>(
-    "localWallet",
-    null
-  );
+  // const [wallet, setWallet] = useLocalStorage<WalletCore | null>(
+  //   "localWallet",
+  //   null
+  // );
+  const [wallet, setWallet] = useState<WalletCore | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    try {
+      const item = window.localStorage.getItem("localWallet");
+      if (item) {
+        setWallet(JSON.parse(item));
+      }
+    } catch (error) {
+      console.error("Error accessing localStorage:", error);
+      return;
+    }
+  }, []);
+
+  const saveWallet = useCallback((w: WalletCore | null) => {
+    setWallet(w);
+    if (typeof window === "undefined") {
+      return;
+    }
+    try {
+      window.localStorage.setItem("localWallet", JSON.stringify(w));
+    } catch (error) {
+      console.error("Error accessing localStorage:", error);
+      return;
+    }
+  }, []);
   if (wallet?.publicKey && wallet?.publicKey.length < 64) {
-    setWallet(null)
+    setWallet(null);
   }
 
   const hasWallet = Boolean(wallet);
@@ -22,7 +50,7 @@ const WalletManager: FC = () => {
       {!hasWallet && (
         <CreateOrRestoreWallet
           onFinishCreateWallet={(w) => {
-            setWallet(w);
+            saveWallet(w);
           }}
         />
       )}
