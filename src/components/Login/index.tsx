@@ -11,6 +11,7 @@ const Login: FC = () => {
     if ((window as any)?.Telegram?.WebApp?.initDataUnsafe) {
       console.log((window as any).Telegram?.WebApp?.initDataUnsafe);
       setInitDataUnsafe((window as any)?.Telegram?.WebApp?.initDataUnsafe);
+      (window as any)?.Telegram.WebApp.MainButton.show();
     }
   }, []);
 
