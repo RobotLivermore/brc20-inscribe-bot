@@ -1,26 +1,88 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import useLocalStorage from "@/hooks/useLocalstorage";
 import useMint from "./useMint";
-import TaskDisplay from "../OrderList/TaskDisplay";
 import { useRouter } from "next/navigation";
+import { WalletCore } from "@/types/wallet";
+import { useTranslation } from "react-i18next";
+import { twMerge } from "tailwind-merge";
+import { fetchChainFeeRate } from "@/api/chain";
+import Button from "@/ui/Button";
+
+const SpeedItem: React.FC<{
+  level: string;
+  fee: number;
+  active: boolean;
+  onClick: () => void;
+}> = ({ level, fee, active, onClick }) => {
+  const cls = twMerge(
+    "flex flex-col items-center justify-between mt-2 rounded py-2 text-sm cursor-pointer",
+    !active
+      ? "border border-black text-black"
+      : "border border-black bg-black text-white"
+  );
+  return (
+    <div className={cls} onClick={onClick}>
+      <span>{level}</span>
+      <span>{fee} sat/vB</span>
+    </div>
+  );
+};
 
 const Brc20Minter = () => {
   const router = useRouter();
   const { isMinting, onMint } = useMint();
+  const { t } = useTranslation();
 
   const [tick, setTick] = React.useState("");
   const [amt, setAmt] = React.useState("");
   const [to, setTo] = React.useState("");
+
+  const [feeRate, setFeeRate] = useState<{
+    slow: number;
+    average: number;
+    fast: number;
+  }>({ slow: 1, average: 1, fast: 1 });
+  const [speed, setSpeed] = useState<"slow" | "average" | "fast">("average");
+  const updateFeeRate = useCallback(async () => {
+    const feeInfo = await fetchChainFeeRate("testnet");
+    setFeeRate({
+      slow: feeInfo.hourFee,
+      average: feeInfo.halfHourFee,
+      fast: feeInfo.fastestFee,
+    });
+  }, []);
+
+  const [wallet, setWallet] = useState<WalletCore | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    try {
+      const item = window.localStorage.getItem("localWallet");
+      if (item) {
+        setWallet(JSON.parse(item));
+      }
+    } catch (error) {
+      console.error("Error accessing localStorage:", error);
+      return;
+    }
+  }, []);
+
   const [taskID, setTaskID] = React.useState("");
   const [inscriptionAddress, setInscriptionAddress] = useState("");
   const [fee, setFee] = useState(0);
 
   const [orderList, setOrderList] = useLocalStorage<any[]>("orderList", []);
 
-  const addOrderAndJumpToOrderList = (_taskId: string, _addr: string, _fee: number) => {
+  const addOrderAndJumpToOrderList = (
+    _taskId: string,
+    _addr: string,
+    _fee: number
+  ) => {
     setOrderList([
       {
         taskId: _taskId,
@@ -35,7 +97,11 @@ const Brc20Minter = () => {
   const handleMint = async () => {
     const reslut = await onMint(tick, Number(amt), to);
     if (reslut?.taskId) {
-      addOrderAndJumpToOrderList(reslut?.taskId, reslut?.inscriptionAddress, reslut?.fee);
+      addOrderAndJumpToOrderList(
+        reslut?.taskId,
+        reslut?.inscriptionAddress,
+        reslut?.fee
+      );
     }
   };
   return (
@@ -69,19 +135,37 @@ const Brc20Minter = () => {
             }}
           />
         </div>
-        <div className="flex flex-col py-3 ">
-          <button
-            className="bg-black py-1.5 text-white rounded flex justify-center items-center"
-            onClick={handleMint}
-          >
-            {isMinting && (
-              <Image src="/assets/loading.svg" width={20} height={20} alt="loading" />
-            )}
-            确认
-          </button>
+        <div className="mt-4 grid grid-cols-3 gap-6 w-full">
+          <SpeedItem
+            level={t("wallet.slow")}
+            fee={feeRate.slow}
+            active={speed === "slow"}
+            onClick={() => {
+              setSpeed("slow");
+            }}
+          />
+          <SpeedItem
+            level={t("wallet.average")}
+            fee={feeRate.average}
+            active={speed === "average"}
+            onClick={() => {
+              setSpeed("average");
+            }}
+          />
+          <SpeedItem
+            level={t("wallet.fast")}
+            fee={feeRate.fast}
+            active={speed === "fast"}
+            onClick={() => {
+              setSpeed("fast");
+            }}
+          />
+        </div>
+        <div className="flex flex-col pt-8 ">
+          <Button disabled={isMinting} theme="primary" text={t('inscribe.mint')} onClick={handleMint} />
+          
         </div>
       </div>
-
     </div>
   );
 };

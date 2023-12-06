@@ -38,5 +38,8 @@
     "sendSuccess": "Send Success",
     "sendFailed": "Send Failed, please try again later",
     "spendAmount": "Spend Amount"
+  },
+  "inscribe": {
+    "mint": "Mint"
   }
 }
