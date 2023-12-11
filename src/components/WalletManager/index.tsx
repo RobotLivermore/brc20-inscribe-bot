@@ -7,12 +7,17 @@ import WalletOperator from "./WalletOperator";
 import useWallet from "@/hooks/useWallet";
 
 const WalletManager: FC = () => {
-  const { wallet, saveWallet } = useWallet();
+  const { wallet, saveWallet, clearWallet } = useWallet();
 
   const hasWallet = Boolean(wallet);
   return (
     <>
-      {hasWallet && <WalletOperator wallet={wallet as WalletCore} />}
+      {hasWallet && (
+        <WalletOperator
+          wallet={wallet as WalletCore}
+          onDeleteWallet={clearWallet}
+        />
+      )}
       {!hasWallet && (
         <CreateOrRestoreWallet
           onFinishCreateWallet={(w) => {

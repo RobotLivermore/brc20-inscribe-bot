@@ -38,7 +38,10 @@
     "sendSuccess": "Send Success",
     "sendFailed": "Send Failed, please try again later",
     "spendAmount": "Spend Amount",
-    "passwordError": "Password Error"
+    "passwordError": "Password Error",
+    "settingTitle": "Settings",
+    "networkSelector": "Network Selector",
+    "deleteWallet": "Delete Wallet"
   },
   "inscribe": {
     "mint": "Mint"

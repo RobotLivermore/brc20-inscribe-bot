@@ -105,7 +105,6 @@ const SendModal: React.FC<Props> = ({
   }, [visible, updateFeeRate]);
 
   const availableBalance = utxos.reduce((acc, cur) => {
-    console.log(cur);
     if (cur.value > 800) {
       return acc + cur.value;
     }

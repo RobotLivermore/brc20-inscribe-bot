@@ -7,7 +7,7 @@ import { twMerge } from "tailwind-merge";
  */
 
 interface Props {
-  theme: "primary" | "outline";
+  theme: "primary" | "outline" | 'danger';
   text: string;
   disabled?: boolean;
   onClick?: () => void;
@@ -15,10 +15,13 @@ interface Props {
 }
 
 const Button: FC<Props> = ({ theme, text, onClick, className, disabled }) => {
+  const colorStyle = {
+    primary: "bg-black text-white disabled:bg-gray-300",
+    outline: "bg-white text-black disabled:text-gray-300 border border-black disabled:border-gray-300",
+    danger: "bg-red-800 text-white disabled:bg-gray-300",
+  }
   const cls = twMerge(
-    theme === "primary"
-      ? "bg-black text-white disabled:bg-gray-300"
-      : "bg-white text-black disabled:text-gray-300 border border-black disabled:border-gray-300",
+    colorStyle[theme],
     "flex justify-center items-center",
     "disabled:cursor-not-allowed ",
     "rounded-full ",

@@ -23,7 +23,7 @@ const TransactionConfirm: FC<TransactionConfirmProps> = ({
   const { t } = useTranslation();
   const { wallet } = useWallet();
 
-  const [errorTips, setErrorTips] = React.useState<string>("");
+  // const [errorTips, setErrorTips] = React.useState<string>("");
 
   const confirmSend = async () => {
     if (!wallet) {
@@ -74,7 +74,7 @@ const TransactionConfirm: FC<TransactionConfirmProps> = ({
         <Button
           disabled={!password}
           theme="primary"
-          text={t("wallet.send")}
+          text={t("common.confirm")}
           className="mt-8 w-full"
           onClick={() => {
             // setStage("success");
