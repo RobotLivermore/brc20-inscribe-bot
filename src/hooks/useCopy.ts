@@ -7,10 +7,17 @@ const useCopy = () => {
   const { t } = useTranslation();
   const showToast = useToast();
 
-  const copyText = useCallback((text: string) => {
-    copy(text);
-    showToast(t("common.copySuccess"));
-  }, [showToast, t]);
+  const copyText = useCallback(
+    (text: string) => {
+      const success = copy(text);
+      if (!success) {
+        showToast(t("common.copySuccess"));
+      } else {
+        showToast(t("common.copyFail"));
+      }
+    },
+    [showToast, t]
+  );
 
   return copyText;
 };

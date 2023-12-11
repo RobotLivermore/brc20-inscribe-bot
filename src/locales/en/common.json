@@ -2,7 +2,8 @@
   "common": {
     "confirm": "Confirm",
     "cancel": "Cancel",
-    "copySuccess": "Copied"
+    "copySuccess": "Copied",
+    "copyFail": "Copy Failed"
   },
   "wallet": {
     "createOrRestore": "Create or Restore Wallet",

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import Image from "next/image";
+// import Image from "next/image";
 import useLocalStorage from "@/hooks/useLocalstorage";
 import useMint from "./useMint";
 import { useRouter } from "next/navigation";

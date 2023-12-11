@@ -2,7 +2,8 @@
   "common": {
     "confirm": "确认",
     "cancel": "取消",
-    "copySuccess": "复制成功"
+    "copySuccess": "复制成功",
+    "copyFailed": "复制失败"
   },
   "wallet": {
     "createOrRestore": "创建或恢复钱包",
