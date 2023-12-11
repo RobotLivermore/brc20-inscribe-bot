@@ -15,7 +15,6 @@ function bytesToHex(bytes: Uint8Array) {
 export const generatePrivateKey = (): string => {
   const privkey =  keys.gen_seckey();
   const privString = bytesToHex(privkey);
-  console.log(privString);
   return privString
 };
 
@@ -30,6 +29,7 @@ export const generateBrc20MintContent = (tick: string, amt: number): string => {
 export function generateInscribe(secret: string, tick: string, amt: number ): string {
   // 读取数据
   const text = generateBrc20MintContent(tick, amt)
+  console.log(text)
 
   const seckey = keys.get_seckey(secret);
   const pubkey = keys.get_pubkey(seckey, true);
@@ -55,7 +55,7 @@ export function generateInscribe(secret: string, tick: string, amt: number ): st
   const tapleaf = Tap.encodeScript(script);
   // Generate a tapkey that includes our leaf script. Also, create a merlke proof
   // (cblock) that targets our leaf and proves its inclusion in the tapkey.
-  const [tpubkey, cblock] = Tap.getPubKey(pubkey, { target: tapleaf });
+  const [tpubkey] = Tap.getPubKey(pubkey, { target: tapleaf });
   console.log("tpubkey", tpubkey);
   // A taproot address is simply the tweaked public key, encoded in bech32 format.
   const address = Address.p2tr.fromPubKey(tpubkey, "testnet");
