@@ -10,7 +10,7 @@ const useCopy = () => {
   const copyText = useCallback(
     (text: string) => {
       const success = copy(text);
-      if (!success) {
+      if (success) {
         showToast(t("common.copySuccess"));
       } else {
         showToast(t("common.copyFail"));

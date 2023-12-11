@@ -5,7 +5,6 @@ import { FC, useState, useEffect, useCallback, use } from "react";
 import { generateAddressFromPubKey } from "@/utils/address";
 import { abbreviateText } from "@/utils/formater";
 import Button from "@/ui/Button";
-import copy from "copy-text-to-clipboard";
 import { Trans, useTranslation } from "react-i18next";
 import { Toaster } from "react-hot-toast";
 import useToast from "@/hooks/useToast";
@@ -15,6 +14,7 @@ import { fetchChainBalance, fetchAddressUtxo } from "@/api/chain";
 import { ReactSVG } from "react-svg";
 import TransactionConfirm from "../TransactionConfirm";
 import useNetwork from "@/hooks/useNetwork";
+import useCopy from "@/hooks/useCopy";
 
 interface Props {
   wallet: WalletCore;
@@ -23,6 +23,7 @@ interface Props {
 
 const WalletOperator: FC<Props> = ({ wallet, onDeleteWallet }) => {
   const { t } = useTranslation();
+  const copy = useCopy()
 
   const [address, setAddress] = useState<string>("");
   const [network, setNetwork] = useNetwork();
