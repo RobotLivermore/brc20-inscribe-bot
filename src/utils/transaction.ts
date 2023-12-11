@@ -1,6 +1,8 @@
 import { Address, Signer, Tx, Tap } from "@cmdcode/tapscript";
 import { UtxoInfo } from "@/types/wallet";
 import { broadcastTx } from "@/api/chain";
+import { fetchAddressUtxo } from '@/api/chain'
+
 
 export const estimateTxSize = (inputs: number, outputs: number) => {
   return inputs * 148 + outputs * 34 + 10 + inputs;
@@ -56,7 +58,8 @@ export const sendBTC = async (
   changeAddress: string,
   network: "main" | "testnet"
 ) => {
-  const selected = selectUtxos(utxos, amount, feeRate);
+  const safeUtxos = utxos.filter((utxo) => utxo.value > 1000);
+  const selected = selectUtxos(safeUtxos, amount, feeRate);
   console.log(selected);
   const inputs = selected.map((utxo) => ({
     txid: utxo.txid,
@@ -100,9 +103,11 @@ export const sendBTC = async (
 
   for (let i = 0; i < inputs.length; i++) {
     console.log("signing input", i)
-    const sig = Signer.taproot.sign(priv, txdata, i);
+    const sig = Signer.taproot.sign(tseckey, txdata, i);
     txdata.vin[i].witness = [sig];
   }
+
+  console.log(inputs.length, txdata)
 
   // For verification, provided your
   // await Signer.taproot.verify(txdata, 0, { throws: true });
@@ -112,8 +117,23 @@ export const sendBTC = async (
   const result = await broadcastTx(txhex, network);
 
   if (result.includes('error')) {
-    throw new Error(JSON.parse(result)?.message || result);
+    throw new Error(JSON.parse(result.slice(result.indexOf('{')))?.message || result);
   }
 
-  return  result;
+  return result;
+}
+
+export const sendBTCByPriv = async (
+  priv: string,
+  amount: number,
+  feeRate: number,
+  toAddress: string,
+  changeAddress: string,
+  network: "main" | "testnet"
+) => {
+  console.log(priv)
+  const utxos = await fetchAddressUtxo(changeAddress, network);
+  console.log(changeAddress, utxos);
+  const result = await sendBTC(priv, utxos, amount, feeRate, toAddress, changeAddress, network);
+  return result;
 }

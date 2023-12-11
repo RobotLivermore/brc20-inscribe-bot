@@ -10,6 +10,12 @@ import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import { fetchChainFeeRate } from "@/api/chain";
 import Button from "@/ui/Button";
+import TransactionConfirm from "../TransactionConfirm";
+import { sendBTCByPriv } from "@/utils/transaction";
+import { generateAddressFromPubKey } from "@/utils/address";
+import useToast from "@/hooks/useToast";
+import { inscribeBrc20Mint } from "@/api/mint";
+import { generateInscribe, generatePrivateKey, generateBrc20MintContent } from "@/utils/mint";
 
 const SpeedItem: React.FC<{
   level: string;
@@ -36,9 +42,13 @@ const Brc20Minter = () => {
   const { isMinting, onMint } = useMint();
   const { t } = useTranslation();
 
+  const [screct, setScrect] = React.useState("");
   const [tick, setTick] = React.useState("");
   const [amt, setAmt] = React.useState("");
   const [to, setTo] = React.useState("");
+  const toastError = useToast("error");
+
+  const [isConfirmPay, setIsConfirmPay] = useState(false);
 
   const [feeRate, setFeeRate] = useState<{
     slow: number;
@@ -54,6 +64,10 @@ const Brc20Minter = () => {
       fast: feeInfo.fastestFee,
     });
   }, []);
+
+  useEffect(() => {
+    updateFeeRate();
+  }, [updateFeeRate]);
 
   const [wallet, setWallet] = useState<WalletCore | null>(null);
 
@@ -91,17 +105,35 @@ const Brc20Minter = () => {
       },
       ...orderList,
     ]);
-    router.push("/orders");
+    // router.push("/orders");
   };
 
   const handleMint = async () => {
-    const reslut = await onMint(tick, Number(amt), to);
-    if (reslut?.taskId) {
-      addOrderAndJumpToOrderList(
-        reslut?.taskId,
-        reslut?.inscriptionAddress,
-        reslut?.fee
+    // const reslut = await onMint(tick, Number(amt), to);
+    const secret = generatePrivateKey();
+    setScrect(secret);
+    const reslut = generateInscribe(secret, tick, Number(amt));
+    setInscriptionAddress(reslut);
+    setFee(feeRate[speed] * 230);
+    setIsConfirmPay(true);
+  };
+
+  const handleTransfer = async (priv: string) => {
+    console.log("spend amount", Number(fee));
+    try {
+      const txid = await sendBTCByPriv(
+        priv,
+        fee + 546,
+        feeRate[speed],
+        inscriptionAddress,
+        generateAddressFromPubKey(wallet?.publicKey as string, "testnet"),
+        "testnet"
       );
+      const resp = await inscribeBrc20Mint(screct, generateBrc20MintContent(tick, Number(amt)), txid, 0, fee + 546, to)
+      console.log(resp);
+    } catch (error: any) {
+      console.log(error);
+      toastError(error.message);
     }
   };
   return (
@@ -162,10 +194,19 @@ const Brc20Minter = () => {
           />
         </div>
         <div className="flex flex-col pt-8 ">
-          <Button disabled={isMinting} theme="primary" text={t('inscribe.mint')} onClick={handleMint} />
-          
+          <Button
+            disabled={isMinting}
+            theme="primary"
+            text={t("inscribe.mint")}
+            onClick={handleMint}
+          />
         </div>
       </div>
+      <TransactionConfirm
+        visible={isConfirmPay}
+        onConfirm={handleTransfer}
+        onClose={() => setIsConfirmPay(false)}
+      />
     </div>
   );
 };

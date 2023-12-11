@@ -17,7 +17,7 @@ export async function POST(req: NextRequest): Promise<any> {
   const txid = requestData.txid;
   const vout = requestData.vout;
   const amount = requestData.amount
-
+  const network = requestData?.network || 'testnet'
 
   const seckey = keys.get_seckey(secret);
   const pubkey = keys.get_pubkey(seckey, true);
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest): Promise<any> {
   const [tpubkey, cblock] = Tap.getPubKey(pubkey, { target: tapleaf });
   console.log("tpubkey", tpubkey);
   // A taproot address is simply the tweaked public key, encoded in bech32 format.
-  const address = Address.p2tr.fromPubKey(tpubkey, "testnet");
+  const address = Address.p2tr.fromPubKey(tpubkey, network);
   console.log("Your address:", address);
 
   const txdata = Tx.create({

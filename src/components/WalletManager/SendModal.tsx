@@ -14,7 +14,6 @@ import { getPrivFromMnemonic } from "@/utils/address";
 import { sendBTC } from "@/utils/transaction";
 import useToast from "@/hooks/useToast";
 import { abbreviateText } from "@/utils/formater";
-import { on } from "events";
 
 const SpeedItem: React.FC<{
   level: string;

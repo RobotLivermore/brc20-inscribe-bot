@@ -37,7 +37,8 @@
     "signTransaction": "Sign Transaction",
     "sendSuccess": "Send Success",
     "sendFailed": "Send Failed, please try again later",
-    "spendAmount": "Spend Amount"
+    "spendAmount": "Spend Amount",
+    "passwordError": "Password Error"
   },
   "inscribe": {
     "mint": "Mint"

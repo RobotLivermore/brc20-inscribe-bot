@@ -12,13 +12,13 @@ export async function POST(req: NextRequest): Promise<any> {
     throw new Error('ALPHA_BOT_URL not found')
   }
 
-  const resp = await fetch(`${baseUrl}/api/brc20/mint`, {
+  const resp = await fetch(`${baseUrl}/api/brc20/mint/paid`, {
     method: 'POST',
     body: JSON.stringify({
-      priv: requestData.priv,
-      tick: requestData.tick,
-      amt: requestData.amt,
-      receive_address: requestData.receiveAddress,
+      taskId: requestData.taskId,
+      txid: requestData.txid,
+      vout: requestData.vout,
+      amount: requestData.amount,
     }),
     headers: {
       'Content-Type': 'application/json',
