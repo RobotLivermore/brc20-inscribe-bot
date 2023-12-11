@@ -1,5 +1,5 @@
 import useToast from "@/hooks/useToast";
-import copy from "copy-text-to-clipboard";
+import copy from "copy-to-clipboard";
 import { useTranslation } from "react-i18next";
 import { useCallback } from "react";
 

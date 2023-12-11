@@ -5,7 +5,7 @@ import { FC, useState, useEffect, useCallback, use } from "react";
 import { generateAddressFromPubKey } from "@/utils/address";
 import { abbreviateText } from "@/utils/formater";
 import Button from "@/ui/Button";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Toaster } from "react-hot-toast";
 import useToast from "@/hooks/useToast";
 import ReceiveModal from "./ReceiveModal";
@@ -93,7 +93,6 @@ const WalletOperator: FC<Props> = ({ wallet, onDeleteWallet }) => {
           className="py-1 px-2 rounded-md cursor-pointer active:bg-gray-100"
           onClick={() => {
             copy(address);
-            toast(t("wallet.copiedToClipboard"));
           }}
         >
           {abbreviateText(address, 4)}
