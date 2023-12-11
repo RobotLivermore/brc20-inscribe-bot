@@ -23,7 +23,7 @@ interface Props {
 
 const WalletOperator: FC<Props> = ({ wallet, onDeleteWallet }) => {
   const { t } = useTranslation();
-  const copy = useCopy()
+  const copy = useCopy();
 
   const [address, setAddress] = useState<string>("");
   const [network, setNetwork] = useNetwork();
@@ -44,7 +44,9 @@ const WalletOperator: FC<Props> = ({ wallet, onDeleteWallet }) => {
     const balanceInfo = await fetchChainBalance(address, network);
     const b =
       balanceInfo.chain_stats.funded_txo_sum -
-      balanceInfo.chain_stats.spent_txo_sum;
+      balanceInfo.chain_stats.spent_txo_sum +
+      balanceInfo.mempool_stats.funded_txo_sum -
+      balanceInfo.mempool_stats.spent_txo_sum;
     setBalance(b);
   }, [address, network]);
 
@@ -188,6 +190,7 @@ const WalletOperator: FC<Props> = ({ wallet, onDeleteWallet }) => {
         visible={isOpenSendModal}
         onClose={handleCloseSendModal}
         wallet={wallet}
+        onUpdate={updateBalance}
       />
       <TransactionConfirm
         visible={isConfirmDelete}

@@ -41,6 +41,7 @@ interface Props {
   utxos: UtxoInfo[];
   wallet: WalletCore;
   network: "main" | "testnet";
+  onUpdate: () => void
   onClose: () => void;
 }
 
@@ -50,6 +51,7 @@ const SendModal: React.FC<Props> = ({
   wallet,
   network,
   onClose,
+  onUpdate,
 }) => {
   const { t } = useTranslation();
   const [stage, setStage] = useState<
@@ -111,6 +113,16 @@ const SendModal: React.FC<Props> = ({
     return acc;
   }, 0);
 
+  const handleClose = () => {
+    onClose();
+    setStage("input");
+    setReceipient("");
+    setAmount(undefined);
+    setSpeed("average");
+    setFee(0);
+    setPassword("");
+  };
+
   const confirmSend = async () => {
     try {
       if (isSendingRef.current) {
@@ -123,7 +135,7 @@ const SendModal: React.FC<Props> = ({
       const availableUtxos = utxos.filter((utxo) => {
         return utxo.value > 800;
       });
-      const result = await sendBTC(
+      await sendBTC(
         priv,
         availableUtxos,
         Math.floor((amount as number) * 100000000),
@@ -133,6 +145,8 @@ const SendModal: React.FC<Props> = ({
         network
       );
       toastSuccess(t("wallet.sendSuccess"));
+      handleClose();
+      onUpdate();
     } catch (error) {
       console.log(error);
       toasstError(t("wallet.sendFailed"));
@@ -143,15 +157,10 @@ const SendModal: React.FC<Props> = ({
   };
 
   return (
-    <Modal visible={visible} onClose={() => {
-      onClose();
-      setStage("input");
-      setReceipient("");
-      setAmount(undefined);
-      setSpeed("average");
-      setFee(0);
-      setPassword("");
-    }}>
+    <Modal
+      visible={visible}
+      onClose={handleClose}
+    >
       <div className="flex flex-col items-center py-6 bg-white w-[100vw] max-w-sm rounded-lg px-4">
         {stage === "input" && (
           <>
@@ -270,7 +279,7 @@ const SendModal: React.FC<Props> = ({
           <>
             <div className="flex flex-col items-center w-full">
               <h3 className="text-xl font-semibold relative w-full">
-              <span
+                <span
                   className="absolute w-7 h-7 left-0 top-0 flex justify-center items-center rounded active:bg-gray-200 cursor-pointer"
                   onClick={() => {
                     setStage("confirm");

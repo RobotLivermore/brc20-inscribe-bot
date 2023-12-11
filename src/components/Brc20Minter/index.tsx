@@ -113,6 +113,19 @@ const Brc20Minter = () => {
     ]);
   };
 
+  const changeOrderStatus = (taskId: string, status: string) => {
+    const newList = orderList.map((item) => {
+      if (item.taskId === taskId) {
+        return {
+          ...item,
+          status,
+        };
+      }
+      return item;
+    });
+    setOrderList(newList);
+  }
+
   const handleMint = async () => {
     // const reslut = await onMint(tick, Number(amt), to);
     const st = generatePrivateKey();
@@ -141,7 +154,7 @@ const Brc20Minter = () => {
         generateAddressFromPubKey(wallet?.publicKey as string, "testnet"),
         "testnet"
       );
-      const resp = await inscribeBrc20Mint(
+      await inscribeBrc20Mint(
         secret,
         generateBrc20MintContent(tick, Number(amt)),
         txid,
