@@ -7,8 +7,6 @@ import { useTranslation } from "react-i18next";
 import { QRCodeCanvas } from "qrcode.react";
 import { abbreviateText } from "@/utils/formater";
 import Button from "@/ui/Button";
-import useToast from "@/hooks/useToast";
-import copy from "copy-text-to-clipboard";
 import useCopy from "@/hooks/useCopy";
 
 interface Props {

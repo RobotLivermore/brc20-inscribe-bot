@@ -18,7 +18,6 @@
     "bitcoinjs-lib": "^6.1.5",
     "browser-passworder": "^2.0.3",
     "buffer": "^6.0.3",
-    "copy-text-to-clipboard": "^3.2.0",
     "copy-to-clipboard": "^3.3.3",
     "crypto-js": "^4.2.0",
     "daisyui": "^4.4.17",

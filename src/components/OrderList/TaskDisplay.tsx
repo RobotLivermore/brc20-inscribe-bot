@@ -2,7 +2,7 @@
 
 import { QRCodeCanvas } from "qrcode.react";
 import Image from "next/image";
-import copy from "copy-text-to-clipboard";
+import copy from "copy-to-clipboard";
 import { abbreviateText } from '@/utils/formater'
 
 const formatStatus = (status: string) => {

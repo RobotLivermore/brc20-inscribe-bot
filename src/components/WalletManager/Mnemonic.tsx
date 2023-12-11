@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { generateMnemonic } from "bip39";
 import toast, { Toaster } from 'react-hot-toast';
 import useThrottleFn from "@/hooks/useThrottleFn";
-import copy from "copy-text-to-clipboard";
+import useCopy from "@/hooks/useCopy";
 
 const MnemonicDisplay: React.FC<{ mnemonic: string }> = ({ mnemonic }) => {
   const wordList = mnemonic.split(" ");
@@ -41,7 +41,8 @@ const Mnemonic: React.FC<Props> = ({ onConfirm }) => {
     setMnemonic(m);
   }, []);
 
-  const notify = useThrottleFn(() => toast.success(t("wallet.copiedToClipboard")), 3000) ;
+  const copy = useCopy();
+
 
   const handleConfirmMnemonic = () => {
     onConfirm(mnemonic);
@@ -62,7 +63,6 @@ const Mnemonic: React.FC<Props> = ({ onConfirm }) => {
         className="btn btn-outline border-black rounded-full text-black flex justify-center mt-4 text-sm"
         onClick={() => {
           copy(mnemonic);
-          notify();
         }}
       >
         {t("wallet.copyToClipboard")}
