@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "PORT=4987 next dev",
     "build": "next build",
     "start": "next start",
