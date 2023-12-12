@@ -3,7 +3,7 @@
 import { QRCodeCanvas } from "qrcode.react";
 import Image from "next/image";
 import copy from "copy-to-clipboard";
-import { abbreviateText } from '@/utils/formater'
+import { abbreviateText } from "@/utils/formater";
 
 const formatStatus = (status: string) => {
   if (status === "waiting_pay") {
@@ -57,28 +57,28 @@ const TaskDisplay: React.FC<Props> = ({
         </span>
       </div>
       <div className="flex justify-between mt-2 px-4">
-        <span
-          className="flex flex-col"
-          onClick={() => {
-            copy(inscriptionAddress);
-          }}
-        >
-          <QRCodeCanvas value={inscriptionAddress} />
-          <span className="flex justify-center">
-            {abbreviateText(inscriptionAddress, 6, 4)}
-            <Image
-              src="/assets/icon/outline/copy.svg"
-              className="mx-1"
-              width={14}
-              height={14}
-              alt="copy"
-              onClick={() => {
-                copy(taskId);
-              }}
-            />
-          </span>
-        </span>
         <div className=" pl-2 flex flex-col flex-grow">
+          <span>铭刻地址:</span>
+          <span
+            className="flex flex-col"
+            onClick={() => {
+              copy(inscriptionAddress);
+            }}
+          >
+            <span className="flex">
+              {abbreviateText(inscriptionAddress, 8, 8)}
+              <Image
+                src="/assets/icon/outline/copy.svg"
+                className="mx-1"
+                width={14}
+                height={14}
+                alt="copy"
+                onClick={() => {
+                  copy(taskId);
+                }}
+              />
+            </span>
+          </span>
           <span>转入金额:</span>
           <span>{Math.ceil(fee) / 100000000} BTC</span>
           <div className="mt-2">订单状态：{formatStatus(status)}</div>

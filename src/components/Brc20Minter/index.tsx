@@ -92,7 +92,6 @@ const Brc20Minter = () => {
     }
   }, []);
 
-  const [taskID, setTaskID] = React.useState("");
   const [inscriptionAddress, setInscriptionAddress] = useState("");
   const [fee, setFee] = useState(0);
 
@@ -108,23 +107,32 @@ const Brc20Minter = () => {
         taskId: _taskId,
         inscriptionAddress: _addr,
         fee: _fee,
+        status: "waiting_pay"
       },
       ...orderList,
     ]);
   };
 
   const changeOrderStatus = (taskId: string, status: string) => {
-    const newList = orderList.map((item) => {
-      if (item.taskId === taskId) {
-        return {
-          ...item,
-          status,
-        };
+    if (typeof window !== "undefined") {
+      try {
+        const currentList = JSON.parse(window.localStorage.getItem("orderList") as string);
+        const newList = currentList.map((item: any) => {
+          if (item.taskId === taskId) {
+            return {
+              ...item,
+              status,
+            };
+          }
+          return item;
+        });
+        setOrderList(newList);
+      } catch (e) {
+        console.log(e);
       }
-      return item;
-    });
-    setOrderList(newList);
-  }
+      
+    }
+  };
 
   const handleMint = async () => {
     // const reslut = await onMint(tick, Number(amt), to);
@@ -154,6 +162,7 @@ const Brc20Minter = () => {
         generateAddressFromPubKey(wallet?.publicKey as string, "testnet"),
         "testnet"
       );
+      changeOrderStatus(newTask.taskId, "waiting_mint");
       await inscribeBrc20Mint(
         secret,
         generateBrc20MintContent(tick, Number(amt)),
@@ -162,6 +171,7 @@ const Brc20Minter = () => {
         fee + 546,
         to
       );
+      changeOrderStatus(newTask.taskId, "minted");
       router.push("/orders");
     } catch (error: any) {
       console.log(error);

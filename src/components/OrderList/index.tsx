@@ -19,7 +19,6 @@ const OrderList: React.FC = () => {
   const { orders, updateOrders } = useOrders(orderIds);
 
   const [isWalletSelect, setIsWalletSelect] = useState(false);
-  console.log(isWalletSelect)
 
   return (
     <div className="flex flex-col pt-8 w-full text-black">
@@ -39,7 +38,9 @@ const OrderList: React.FC = () => {
             inscriptionAddress={item.inscriptionAddress}
             fee={item.fee}
             status={
-              orders?.find((order) => order.id === item.taskId)?.status || ""
+              item?.status ||
+              orders?.find((order) => order.id === item.taskId)?.status ||
+              ""
             }
           />
         ))}
