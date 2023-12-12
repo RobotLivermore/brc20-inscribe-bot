@@ -106,7 +106,7 @@ const TaskDisplay: React.FC<Props> = ({
                   height={12}
                   alt="copy"
                   onClick={() => {
-                    copy(taskId);
+                    copy(secret);
                   }}
                 />
               </span>
