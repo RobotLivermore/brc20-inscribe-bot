@@ -1,19 +1,13 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import Image from "next/image";
 import WalletManager from "../WalletManager";
 import LanguageChanger from '@/components/LanguageChanger';
+import useTgInitData from "@/hooks/useTgInitData";
 
 const Login: FC = () => {
-  const [initDataUnsafe, setInitDataUnsafe] = useState<any | null>(null);
-  useEffect(() => {
-    if ((window as any)?.Telegram?.WebApp?.initDataUnsafe) {
-      console.log((window as any).Telegram?.WebApp?.initDataUnsafe);
-      setInitDataUnsafe((window as any)?.Telegram?.WebApp?.initDataUnsafe);
-      (window as any)?.Telegram.WebApp.MainButton.show();
-    }
-  }, []);
+  const initDataUnsafe = useTgInitData();
 
   return (
     <>

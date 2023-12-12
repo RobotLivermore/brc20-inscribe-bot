@@ -3,20 +3,20 @@
 import useLocalStorage from "@/hooks/useLocalstorage";
 import React, { useMemo, useState } from "react";
 import TaskDisplay from "./TaskDisplay";
-import useOrders from "./useOrders";
+// import useOrders from "./useOrders";
 import WalletSelectModal from "./WalletSelectModal";
 
 const OrderList: React.FC = () => {
   const [orderList] = useLocalStorage<any[]>("orderList", []);
-  const orderIds = useMemo(
-    () =>
-      orderList
-        .filter((item) => Boolean(item.taskId))
-        .map((item) => item.taskId),
-    [orderList]
-  );
+  // const orderIds = useMemo(
+  //   () =>
+  //     orderList
+  //       .filter((item) => Boolean(item.taskId))
+  //       .map((item) => item.taskId),
+  //   [orderList]
+  // );
 
-  const { orders, updateOrders } = useOrders(orderIds);
+  // const { orders, updateOrders } = useOrders(orderIds);
 
   const [isWalletSelect, setIsWalletSelect] = useState(false);
 
@@ -37,11 +37,7 @@ const OrderList: React.FC = () => {
             taskId={item.taskId}
             inscriptionAddress={item.inscriptionAddress}
             fee={item.fee}
-            status={
-              item?.status ||
-              orders?.find((order) => order.id === item.taskId)?.status ||
-              ""
-            }
+            status={item?.status || ""}
           />
         ))}
       <WalletSelectModal

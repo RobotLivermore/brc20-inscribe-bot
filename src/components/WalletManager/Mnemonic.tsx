@@ -3,8 +3,6 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { generateMnemonic } from "bip39";
-import toast, { Toaster } from 'react-hot-toast';
-import useThrottleFn from "@/hooks/useThrottleFn";
 import useCopy from "@/hooks/useCopy";
 
 const MnemonicDisplay: React.FC<{ mnemonic: string }> = ({ mnemonic }) => {
@@ -74,7 +72,6 @@ const Mnemonic: React.FC<Props> = ({ onConfirm }) => {
       >
         {t("wallet.next")}
       </button>
-      <Toaster />
     </div>
   );
 };

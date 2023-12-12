@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 export const fetchBrc20MintInscriptionAddress = async (
   tick: string,
   amt: number,
@@ -31,6 +33,35 @@ export const createOrder = async (
       tick,
       amt,
       receiveAddress,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await resp.json();
+  return data?.data;
+}
+
+export const createTextInscriptionTask = async (
+  userId: string,
+  secret: string,
+  text: string,
+  receiveAddress: string,
+  inscribeAddress: string,
+  status: string,
+) => {
+  const resp = await fetch("/api/brc20/tasks/create", {
+    method: "POST",
+    body: JSON.stringify({
+      id: uuidv4(),
+      userId,
+      secret,
+      text,
+      receiveAddress,
+      inscribeAddress,
+      status,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }),
     headers: {
       "Content-Type": "application/json",

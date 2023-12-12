@@ -1,9 +1,8 @@
 "use client";
 
-import { QRCodeCanvas } from "qrcode.react";
 import Image from "next/image";
-import copy from "copy-to-clipboard";
 import { abbreviateText } from "@/utils/formater";
+import useCopy from "@/hooks/useCopy";
 
 const formatStatus = (status: string) => {
   if (status === "waiting_pay") {
@@ -38,6 +37,7 @@ const TaskDisplay: React.FC<Props> = ({
   status,
   onOpenWallet,
 }) => {
+  const copy = useCopy();
   return (
     <div className="flex flex-col justify-center bg-white my-2 py-4 rounded-lg">
       <div className="flex px-4 justify-between">
@@ -57,7 +57,7 @@ const TaskDisplay: React.FC<Props> = ({
         </span>
       </div>
       <div className="flex justify-between mt-2 px-4">
-        <div className=" pl-2 flex flex-col flex-grow">
+        <div className="flex flex-col flex-grow">
           <span>铭刻地址:</span>
           <span
             className="flex flex-col"
@@ -79,7 +79,7 @@ const TaskDisplay: React.FC<Props> = ({
               />
             </span>
           </span>
-          <span>转入金额:</span>
+          <span className="mt-2">转入金额:</span>
           <span>{Math.ceil(fee) / 100000000} BTC</span>
           <div className="mt-2">订单状态：{formatStatus(status)}</div>
           <div className="flex-grow" />

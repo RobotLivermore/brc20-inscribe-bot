@@ -13,7 +13,9 @@
     "@cmdcode/tapscript": "^1.4.3",
     "@formatjs/intl-localematcher": "^0.5.2",
     "@headlessui/react": "^1.7.17",
+    "@prisma/client": "^5.7.0",
     "@scure/bip32": "^1.3.2",
+    "@vercel/postgres": "^0.5.1",
     "bip39": "^3.1.0",
     "bitcoinjs-lib": "^6.1.5",
     "browser-passworder": "^2.0.3",
@@ -28,6 +30,7 @@
     "next": "14.0.3",
     "next-i18n-router": "^5.0.2",
     "node-fetch": "^3.3.2",
+    "prisma": "^5.7.0",
     "qrcode.react": "^3.1.0",
     "react": "^18",
     "react-dom": "^18",
@@ -35,7 +38,8 @@
     "react-i18next": "^13.5.0",
     "react-svg": "^16.1.31",
     "server-only": "^0.0.1",
-    "tailwind-merge": "^2.0.0"
+    "tailwind-merge": "^2.0.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.1",
@@ -43,6 +47,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^9.0.7",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",

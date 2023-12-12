@@ -6,7 +6,6 @@ import { generateAddressFromPubKey } from "@/utils/address";
 import { abbreviateText } from "@/utils/formater";
 import Button from "@/ui/Button";
 import { useTranslation } from "react-i18next";
-import { Toaster } from "react-hot-toast";
 import useToast from "@/hooks/useToast";
 import ReceiveModal from "./ReceiveModal";
 import SendModal from "./SendModal";
@@ -202,7 +201,6 @@ const WalletOperator: FC<Props> = ({ wallet, onDeleteWallet }) => {
           setIsConfirmDelete(false);
         }}
       />
-      <Toaster />
     </div>
   );
 };

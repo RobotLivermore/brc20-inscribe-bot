@@ -14,13 +14,16 @@ import TransactionConfirm from "../TransactionConfirm";
 import { sendBTCByPriv } from "@/utils/transaction";
 import { generateAddressFromPubKey } from "@/utils/address";
 import useToast from "@/hooks/useToast";
-import { createOrder, inscribeBrc20Mint } from "@/api/mint";
+import { createTextInscriptionTask, inscribeBrc20Mint } from "@/api/mint";
 import {
   generateInscribe,
   generatePrivateKey,
   generateBrc20MintContent,
 } from "@/utils/mint";
 import Modal from "@/ui/Modal";
+import useNetwork from "@/hooks/useNetwork";
+import useTgInitData from "@/hooks/useTgInitData";
+import { v4 as uuidV4 } from "uuid";
 
 const SpeedItem: React.FC<{
   level: string;
@@ -53,6 +56,14 @@ const Brc20Minter = () => {
   const [to, setTo] = React.useState("");
   const toastError = useToast("error");
 
+  const initDataUnsafe = useTgInitData();
+
+  const userId = initDataUnsafe?.user?.id
+    ? String(initDataUnsafe?.user?.id)
+    : "-1";
+
+  const [network] = useNetwork();
+
   const [isConfirmPay, setIsConfirmPay] = useState(false);
   const [isInscribing, setIsInscribing] = useState(false);
 
@@ -63,13 +74,13 @@ const Brc20Minter = () => {
   }>({ slow: 1, average: 1, fast: 1 });
   const [speed, setSpeed] = useState<"slow" | "average" | "fast">("average");
   const updateFeeRate = useCallback(async () => {
-    const feeInfo = await fetchChainFeeRate("testnet");
+    const feeInfo = await fetchChainFeeRate(network);
     setFeeRate({
       slow: feeInfo.hourFee,
       average: feeInfo.halfHourFee,
       fast: feeInfo.fastestFee,
     });
-  }, []);
+  }, [network]);
 
   useEffect(() => {
     updateFeeRate();
@@ -99,15 +110,17 @@ const Brc20Minter = () => {
 
   const addOrderAndJumpToOrderList = (
     _taskId: string,
+    _content: string,
     _addr: string,
     _fee: number
   ) => {
     setOrderList([
       {
         taskId: _taskId,
+        content: _content,
         inscriptionAddress: _addr,
         fee: _fee,
-        status: "waiting_pay"
+        status: "waiting_pay",
       },
       ...orderList,
     ]);
@@ -116,7 +129,9 @@ const Brc20Minter = () => {
   const changeOrderStatus = (taskId: string, status: string) => {
     if (typeof window !== "undefined") {
       try {
-        const currentList = JSON.parse(window.localStorage.getItem("orderList") as string);
+        const currentList = JSON.parse(
+          window.localStorage.getItem("orderList") as string
+        );
         const newList = currentList.map((item: any) => {
           if (item.taskId === taskId) {
             return {
@@ -130,7 +145,6 @@ const Brc20Minter = () => {
       } catch (e) {
         console.log(e);
       }
-      
     }
   };
 
@@ -142,7 +156,7 @@ const Brc20Minter = () => {
     const reslut = generateInscribe(st, tick, Number(amt));
     console.log(tick, Number(amt), reslut);
     setInscriptionAddress(reslut);
-    setFee(feeRate[speed] * 230);
+    setFee(feeRate[speed] * 230 + 546);
     setIsConfirmPay(true);
   };
 
@@ -150,28 +164,41 @@ const Brc20Minter = () => {
     console.log("spend amount", Number(fee));
     setIsInscribing(true);
     try {
-      const newTask = await createOrder(secret, tick, Number(amt), to);
-      console.log("inscriptionAddress", inscriptionAddress);
-      console.log(newTask);
-      addOrderAndJumpToOrderList(newTask.taskId, inscriptionAddress, fee);
+      // const newTask = await createTextInscriptionTask(
+      //   userId,
+      //   secret,
+      //   generateBrc20MintContent(tick, Number(amt)),
+      //   to,
+      //   inscriptionAddress,
+      //   "waiting_pay"
+      // );
+      // console.log("inscriptionAddress", inscriptionAddress);
+      // console.log(newTask);
+      const taskId = uuidV4();
+      addOrderAndJumpToOrderList(
+        taskId,
+        generateBrc20MintContent(tick, Number(amt)),
+        inscriptionAddress,
+        fee
+      );
       const txid = await sendBTCByPriv(
         priv,
-        fee + 546,
+        fee,
         feeRate[speed],
         inscriptionAddress,
-        generateAddressFromPubKey(wallet?.publicKey as string, "testnet"),
-        "testnet"
+        generateAddressFromPubKey(wallet?.publicKey as string, network),
+        network
       );
-      changeOrderStatus(newTask.taskId, "waiting_mint");
+      changeOrderStatus(taskId, "waiting_mint");
       await inscribeBrc20Mint(
         secret,
         generateBrc20MintContent(tick, Number(amt)),
         txid,
         0,
-        fee + 546,
+        fee,
         to
       );
-      changeOrderStatus(newTask.taskId, "minted");
+      changeOrderStatus(taskId, "minted");
       router.push("/orders");
     } catch (error: any) {
       console.log(error);
