@@ -1,10 +1,10 @@
 "use client";
 
 import useLocalStorage from "@/hooks/useLocalstorage";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import TaskDisplay from "./TaskDisplay";
 // import useOrders from "./useOrders";
-import WalletSelectModal from "./WalletSelectModal";
+// import WalletSelectModal from "./WalletSelectModal";
 
 const OrderList: React.FC = () => {
   const [orderList] = useLocalStorage<any[]>("orderList", []);
@@ -39,6 +39,7 @@ const OrderList: React.FC = () => {
             fee={item.fee}
             status={item?.status || ""}
             createdAt={item.createdAt}
+            secret={item.secret}
           />
         ))}
       {/* <WalletSelectModal

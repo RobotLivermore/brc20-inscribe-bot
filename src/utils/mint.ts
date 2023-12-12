@@ -26,7 +26,7 @@ export const generateBrc20MintContent = (tick: string, amt: number): string => {
 /*
 铭刻过程
 */
-export function generateInscribe(secret: string, tick: string, amt: number ): string {
+export function generateInscribe(secret: string, tick: string, amt: number, network: 'main' |'testnet' ): string {
   // 读取数据
   const text = generateBrc20MintContent(tick, amt)
   console.log(text)
@@ -58,7 +58,7 @@ export function generateInscribe(secret: string, tick: string, amt: number ): st
   const [tpubkey] = Tap.getPubKey(pubkey, { target: tapleaf });
   console.log("tpubkey", tpubkey);
   // A taproot address is simply the tweaked public key, encoded in bech32 format.
-  const address = Address.p2tr.fromPubKey(tpubkey, "testnet");
+  const address = Address.p2tr.fromPubKey(tpubkey, network);
   console.log("Your address:", address);
   return address
 }

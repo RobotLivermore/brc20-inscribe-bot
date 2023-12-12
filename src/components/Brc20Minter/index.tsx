@@ -158,7 +158,7 @@ const Brc20Minter = () => {
     const st = generatePrivateKey();
     setSecret(st);
     console.log(st);
-    const reslut = generateInscribe(st, tick, Number(amt));
+    const reslut = generateInscribe(st, tick, Number(amt), network);
     console.log(tick, Number(amt), reslut);
     setInscriptionAddress(reslut);
     setFee(feeRate[speed] * 230 + 546);
@@ -203,7 +203,8 @@ const Brc20Minter = () => {
         txid,
         0,
         fee,
-        to
+        to,
+        network
       );
       changeOrderStatus(taskId, "minted");
       router.push("/orders");

@@ -28,6 +28,7 @@ interface Props {
   fee: number;
   status: string;
   createdAt: number;
+  secret?: string;
   onOpenWallet: (address: string, satsAmount: number) => void;
 }
 
@@ -36,6 +37,7 @@ const TaskDisplay: React.FC<Props> = ({
   inscriptionAddress,
   fee,
   status,
+  secret,
   createdAt,
 }) => {
   const copy = useCopy();
@@ -92,6 +94,24 @@ const TaskDisplay: React.FC<Props> = ({
             <span>{formatStatus(status)}</span>
           </div>
           <div className="flex-grow" />
+          {secret && (
+            <div className="flex mt-2 justify-between">
+              <span>交易私钥</span>
+              <span className="flex">
+                {abbreviateText(secret, 8, 8)}{" "}
+                <Image
+                  src="/assets/icon/outline/copy.svg"
+                  className="mx-1"
+                  width={12}
+                  height={12}
+                  alt="copy"
+                  onClick={() => {
+                    copy(taskId);
+                  }}
+                />
+              </span>
+            </div>
+          )}
           <div className="mt-2">
             {createdAt && <span>{new Date(createdAt).toLocaleString()}</span>}
           </div>
