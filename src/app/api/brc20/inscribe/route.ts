@@ -18,6 +18,7 @@ export async function POST(req: NextRequest): Promise<any> {
   const vout = requestData.vout;
   const amount = requestData.amount
   const network = requestData?.network || 'testnet'
+  console.log(requestData)
 
   const seckey = keys.get_seckey(secret);
   const pubkey = keys.get_pubkey(seckey, true);
@@ -47,7 +48,7 @@ export async function POST(req: NextRequest): Promise<any> {
   console.log("tpubkey", tpubkey);
   // A taproot address is simply the tweaked public key, encoded in bech32 format.
   const address = Address.p2tr.fromPubKey(tpubkey, network);
-  console.log("Your address:", address);
+  console.log("Your address:", address, Address.toScriptPubKey(receiveAddress));
 
   const txdata = Tx.create({
     vin: [
@@ -86,11 +87,11 @@ export async function POST(req: NextRequest): Promise<any> {
 
   // Check if the signature is valid for the provided public key, and that the
   // transaction is also valid (the merkle proof will be validated as well).
-  // const isValid = Signer.taproot.verify(txdata, 0, { pubkey, throws: true });
-  // console.log("isValid", isValid);
+  const isValid = Signer.taproot.verify(txdata, 0, { pubkey, throws: true });
+  console.log("isValid", isValid);
 
   console.log("Your txhex:", Tx.encode(txdata).hex);
-  const result = await broardTx(Tx.encode(txdata).hex);
+  const result = await broardTx(Tx.encode(txdata).hex, network);
   // await broadcast(Tx.encode(txdata).hex);
   return new Response(
     JSON.stringify({

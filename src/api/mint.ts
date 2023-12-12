@@ -111,7 +111,7 @@ export const inscribeBrc20Mint = async (
       vout,
       amount,
       receiveAddress,
-      network: "main",
+      network,
     }),
     headers: {
       "Content-Type": "application/json",
