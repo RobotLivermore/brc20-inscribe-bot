@@ -27,6 +27,7 @@ interface Props {
   inscriptionAddress: string;
   fee: number;
   status: string;
+  createdAt: number;
   onOpenWallet: (address: string, satsAmount: number) => void;
 }
 
@@ -35,11 +36,11 @@ const TaskDisplay: React.FC<Props> = ({
   inscriptionAddress,
   fee,
   status,
-  onOpenWallet,
+  createdAt,
 }) => {
   const copy = useCopy();
   return (
-    <div className="flex flex-col justify-center bg-white my-2 py-4 rounded-lg">
+    <div className="flex flex-col justify-center bg-white my-2 py-4 rounded-lg text-xs">
       <div className="flex px-4 justify-between">
         <span>Order ID:</span>
         <span className="flex">
@@ -47,8 +48,8 @@ const TaskDisplay: React.FC<Props> = ({
           <Image
             src="/assets/icon/outline/copy.svg"
             className="mx-1"
-            width={16}
-            height={16}
+            width={12}
+            height={12}
             alt="copy"
             onClick={() => {
               copy(taskId);
@@ -58,41 +59,42 @@ const TaskDisplay: React.FC<Props> = ({
       </div>
       <div className="flex justify-between mt-2 px-4">
         <div className="flex flex-col flex-grow">
-          <span>铭刻地址:</span>
-          <span
-            className="flex flex-col"
-            onClick={() => {
-              copy(inscriptionAddress);
-            }}
-          >
-            <span className="flex">
-              {abbreviateText(inscriptionAddress, 8, 8)}
-              <Image
-                src="/assets/icon/outline/copy.svg"
-                className="mx-1"
-                width={14}
-                height={14}
-                alt="copy"
-                onClick={() => {
-                  copy(taskId);
-                }}
-              />
-            </span>
-          </span>
-          <span className="mt-2">转入金额:</span>
-          <span>{Math.ceil(fee) / 100000000} BTC</span>
-          <div className="mt-2">订单状态：{formatStatus(status)}</div>
-          <div className="flex-grow" />
-          {status === "waiting_pay" && (
-            <div
-              className="border py-1 flex justify-center rounded-full"
+          <div className="flex justify-between">
+            <span>铭刻地址:</span>
+            <span
+              className="flex flex-col"
               onClick={() => {
-                onOpenWallet(inscriptionAddress, fee);
+                copy(inscriptionAddress);
               }}
             >
-              打开钱包
-            </div>
-          )}
+              <span className="flex">
+                {abbreviateText(inscriptionAddress, 8, 8)}
+                <Image
+                  src="/assets/icon/outline/copy.svg"
+                  className="mx-1"
+                  width={12}
+                  height={12}
+                  alt="copy"
+                  onClick={() => {
+                    copy(taskId);
+                  }}
+                />
+              </span>
+            </span>
+          </div>
+          <div className="mt-2 flex justify-between">
+            <span>转入金额:</span>
+            <span>{Math.ceil(fee) / 100000000} BTC</span>
+          </div>
+
+          <div className="mt-2 flex justify-between">
+            <span>订单状态：</span>
+            <span>{formatStatus(status)}</span>
+          </div>
+          <div className="flex-grow" />
+          <div className="mt-2">
+            {createdAt && <span>{new Date(createdAt).toLocaleString()}</span>}
+          </div>
         </div>
       </div>
     </div>

@@ -110,17 +110,22 @@ const Brc20Minter = () => {
 
   const addOrderAndJumpToOrderList = (
     _taskId: string,
+    _secret: string,
     _content: string,
     _addr: string,
+    _receipt: string,
     _fee: number
   ) => {
     setOrderList([
       {
         taskId: _taskId,
         content: _content,
+        secret: _secret,
         inscriptionAddress: _addr,
+        receiveAddress: _receipt,
         fee: _fee,
         status: "waiting_pay",
+        createdAt: new Date().valueOf(),
       },
       ...orderList,
     ]);
@@ -177,8 +182,10 @@ const Brc20Minter = () => {
       const taskId = uuidV4();
       addOrderAndJumpToOrderList(
         taskId,
+        secret,
         generateBrc20MintContent(tick, Number(amt)),
         inscriptionAddress,
+        to,
         fee
       );
       const txid = await sendBTCByPriv(

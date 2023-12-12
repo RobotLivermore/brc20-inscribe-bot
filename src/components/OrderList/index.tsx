@@ -21,8 +21,8 @@ const OrderList: React.FC = () => {
   const [isWalletSelect, setIsWalletSelect] = useState(false);
 
   return (
-    <div className="flex flex-col pt-8 w-full text-black">
-      <div className="fixed top-0 left-0 right-0 py-2 px-4 w-full bg-white font-bold border-b border-gray-200">
+    <div className="flex flex-col pt-8 pb-20 w-full text-black">
+      <div className="fixed top-0 left-0 right-0 py-2 px-4 w-full bg-white font-bold border-b border-black">
         历史订单
       </div>
 
@@ -38,12 +38,13 @@ const OrderList: React.FC = () => {
             inscriptionAddress={item.inscriptionAddress}
             fee={item.fee}
             status={item?.status || ""}
+            createdAt={item.createdAt}
           />
         ))}
-      <WalletSelectModal
+      {/* <WalletSelectModal
         visible={isWalletSelect}
         onClose={() => setIsWalletSelect(false)}
-      />
+      /> */}
     </div>
   );
 };
