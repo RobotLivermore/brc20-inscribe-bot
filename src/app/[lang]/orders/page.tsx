@@ -12,7 +12,7 @@ export default async function OrdersPage({ params: { lang } }: any) {
       locale={lang}
       resources={resources}
     >
-      <main className="flex min-h-screen flex-col items-center justify-between p-4 bg-gray-100">
+      <main className="flex min-h-screen flex-col items-center justify-between p-4 ">
         <OrderList />
         <Navigator />
       </main>

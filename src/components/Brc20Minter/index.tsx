@@ -218,7 +218,7 @@ const Brc20Minter = () => {
   return (
     <>
       <div className="flex flex-col w-full items-center text-black">
-        <div className="max-w-xl flex flex-col w-full bg-white p-4 rounded-3xl">
+        {/* <div className="max-w-xl mb-4 flex flex-col w-full bg-white p-4 rounded-3xl">
           <h3 className="text-xl font-semibold">Hot Token</h3>
           <table className="mt-4">
             <thead>
@@ -248,8 +248,8 @@ const Brc20Minter = () => {
               </tr>
             </tbody>
           </table>
-        </div>
-        <div className="mt-4 max-w-xl flex flex-col w-full bg-white p-4 rounded-3xl">
+        </div> */}
+        <div className="max-w-xl flex flex-col w-full bg-white p-4 rounded-3xl border border-black shadow-[5px_5px_black]">
           <h2 className="text-xl font-semibold">BRC20 Minter</h2>
           <div className="flex flex-col mt-2">
             <span className="mb-1 text-xs">币种（tick）</span>

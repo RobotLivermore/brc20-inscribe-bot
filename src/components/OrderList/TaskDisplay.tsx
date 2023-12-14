@@ -42,7 +42,7 @@ const TaskDisplay: React.FC<Props> = ({
 }) => {
   const copy = useCopy();
   return (
-    <div className="flex flex-col justify-center bg-white my-2 py-4 rounded-lg text-xs">
+    <div className="flex flex-col justify-center bg-white border border-black shadow-[5px_5px_black] my-2 py-4 rounded-lg text-xs">
       <div className="flex px-4 justify-between">
         <span>Order ID:</span>
         <span className="flex">
