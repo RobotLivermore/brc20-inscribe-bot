@@ -262,7 +262,7 @@ const Brc20Minter = () => {
             </tbody>
           </table>
         </div> */}
-        <div className="max-w-xl flex flex-col w-full bg-white p-4 rounded-3xl border border-black shadow-[5px_5px_black]">
+        <div className="max-w-xl flex flex-col w-full bg-white p-4 rounded-3xl border-2 border-black shadow-[5px_5px_black]">
           <h2 className="text-xl font-semibold">BRC20 Minter</h2>
           <div className="flex flex-col mt-2">
             <span className="mb-1 text-xs">币种（tick）</span>

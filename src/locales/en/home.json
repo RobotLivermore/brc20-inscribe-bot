@@ -1,0 +1,10 @@
+{
+  "home": {
+    "mint": "Mint",
+    "hotMints": "Hot Mints",
+    "tick": "Ttick",
+    "holders": "Holders",
+    "process": "Process",
+    "pleaseSetUpWallet": "Please create or restore your wallet first"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "home": {
+    "mint": "铸造",
+    "hotMints": "热门铸造",
+    "tick": "币种(tick)",
+    "holders": "持有人数",
+    "process": "铸造进度",
+    "pleaseSetUpWallet": "请先创建或导入钱包"
+  }
+}
