@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import "../globals.css";
 import InitApp from "@/components/InitApp";
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +20,7 @@ export default function RootLayout({
   params: any;
 }) {
   return (
-    <html lang={params?.lang || 'en'} data-theme="lofi">
+    <html lang={params?.lang || "en"} data-theme="lofi">
       <head>
         <Script
           async
@@ -28,7 +28,7 @@ export default function RootLayout({
           strategy="beforeInteractive"
         />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} sm:flex sm:flex-col sm:items-center sm:justify-center sm:min-h-screen`}>
         {children}
         <InitApp />
         <Toaster />

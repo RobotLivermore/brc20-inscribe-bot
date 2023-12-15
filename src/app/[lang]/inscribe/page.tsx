@@ -12,10 +12,12 @@ export default async function Inscribe({ params: { lang } }: any) {
       locale={lang}
       resources={resources}
     >
-      <main className="flex min-h-screen flex-col items-center justify-between p-4 bg-white !pb-20">
-        <Brc20Minter />
+      <div className="sm:max-w-[420px] w-full relative sm:h-[800px] sm:max-h-[80vh] border-black border-0 sm:border overflow-auto">
+        <main className="flex min-h-screen flex-col items-center p-4  !pb-20">
+          <Brc20Minter />
+        </main>
         <Navigator />
-      </main>
+      </div>
     </TranslationsProvider>
   );
 }

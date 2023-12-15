@@ -29,7 +29,6 @@ interface Props {
   status: string;
   createdAt: number;
   secret?: string;
-  onOpenWallet: (address: string, satsAmount: number) => void;
 }
 
 const TaskDisplay: React.FC<Props> = ({
