@@ -16,9 +16,9 @@ export async function POST(req: NextRequest): Promise<any> {
   const receiveAddress = requestData.receiveAddress;
   const txid = requestData.txid;
   const vout = requestData.vout;
-  const amount = requestData.amount
+  const amount = requestData.amount;
+  const outputAmount = requestData.outputAmount;
   const network = requestData?.network || 'testnet'
-  console.log(requestData)
 
   const seckey = keys.get_seckey(secret);
   const pubkey = keys.get_pubkey(seckey, true);
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest): Promise<any> {
     vout: [
       {
         // We are leaving behind 1000 sats as a fee to the miners.
-        value: 546,
+        value: outputAmount || 546,
         // This is the new script that we are locking our funds to.
         scriptPubKey: Address.toScriptPubKey(receiveAddress),
       },

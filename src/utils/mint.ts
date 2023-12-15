@@ -13,23 +13,35 @@ function bytesToHex(bytes: Uint8Array) {
 }
 
 export const generatePrivateKey = (): string => {
-  const privkey =  keys.gen_seckey();
+  const privkey = keys.gen_seckey();
   const privString = bytesToHex(privkey);
-  return privString
+  return privString;
 };
 
-export const generateBrc20MintContent = (tick: string, amt: number): string => {
-  const text = `{"p":"brc-20","op":"mint","tick":"${tick}","amt":"${Math.floor(amt)}"}`
-  return text
-}
+export const generateBrc20MintContent = (
+  tick: string,
+  amt: number,
+  protocol: string = "brc-20"
+): string => {
+  const text = `{"p":"${protocol}","op":"mint","tick":"${tick}","amt":"${Math.floor(
+    amt
+  )}"}`;
+  return text;
+};
 
 /*
 铭刻过程
 */
-export function generateInscribe(secret: string, tick: string, amt: number, network: 'main' |'testnet' ): string {
+export function generateInscribe(
+  secret: string,
+  tick: string,
+  amt: number,
+  network: "main" | "testnet",
+  protocol: string = "brc-20"
+): string {
   // 读取数据
-  const text = generateBrc20MintContent(tick, amt)
-  console.log(text)
+  const text = generateBrc20MintContent(tick, amt, protocol);
+  console.log(text);
 
   const seckey = keys.get_seckey(secret);
   const pubkey = keys.get_pubkey(seckey, true);
@@ -60,5 +72,5 @@ export function generateInscribe(secret: string, tick: string, amt: number, netw
   // A taproot address is simply the tweaked public key, encoded in bech32 format.
   const address = Address.p2tr.fromPubKey(tpubkey, network);
   console.log("Your address:", address);
-  return address
+  return address;
 }

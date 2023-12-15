@@ -1,11 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import Image from "next/image";
 import useLocalStorage from "@/hooks/useLocalstorage";
-import useMint from "./useMint";
 import { useRouter, useSearchParams } from "next/navigation";
-import { WalletCore } from "@/types/wallet";
 import { useTranslation } from "react-i18next";
 import { fetchChainFeeRate } from "@/api/chain";
 import Button from "@/ui/Button";
@@ -19,35 +16,26 @@ import {
   generatePrivateKey,
   generateBrc20MintContent,
 } from "@/utils/mint";
-import Modal from "@/ui/Modal";
 import useNetwork from "@/hooks/useNetwork";
-import useTgInitData from "@/hooks/useTgInitData";
 import { v4 as uuidV4 } from "uuid";
 import SpeedItem from "./SpeedItem";
 import useLoading from "@/hooks/useLoading";
 import { ReactSVG } from "react-svg";
+import LoadingModal from "@/ui/LoadingModal";
+import useWallet from "@/hooks/useWallet";
 
 const Brc20Minter = () => {
   const router = useRouter();
-  const { isMinting, onMint } = useMint();
   const { t } = useTranslation();
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
 
-  const [secret, setSecret] = React.useState("");
   const [tick, setTick] = React.useState("");
   const [amt, setAmt] = React.useState(0);
   const [to, setTo] = React.useState("");
   const toastError = useToast("error");
 
-
-
-  const initDataUnsafe = useTgInitData();
-
-  const userId = initDataUnsafe?.user?.id
-    ? String(initDataUnsafe?.user?.id)
-    : "-1";
-
   const [network] = useNetwork();
+  const [protocol, setProtocol] = useState<"brc-20" | "brc-100">("brc-20");
 
   const [isConfirmPay, setIsConfirmPay] = useState(false);
   const [isInscribing, setIsInscribing] = useState(false);
@@ -71,53 +59,37 @@ const Brc20Minter = () => {
     updateFeeRate();
   }, [updateFeeRate]);
 
-  const [wallet, setWallet] = useState<WalletCore | null>(null);
+  const { wallet } = useWallet();
 
   const [isQueryTick, getIsQueryTick, setIsQueryTick] = useLoading();
-  const updateAmount = useCallback(async (tick: string) => {
-    if (!getIsQueryTick()) {
-      try {
-        setIsQueryTick(true);
-        const res = await fetchTickInfo(tick);
-        setAmt(Number(res.limit));
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsQueryTick(false);
+  const updateAmount = useCallback(
+    async (tick: string) => {
+      if (!getIsQueryTick() && protocol === 'brc-20') {
+        try {
+          setIsQueryTick(true);
+          const res = await fetchTickInfo(tick);
+          setAmt(Number(res.limit));
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setIsQueryTick(false);
+        }
       }
-    }
-  }, [getIsQueryTick, setIsQueryTick]);
+    },
+    [getIsQueryTick, setIsQueryTick, protocol]
+  );
 
   useEffect(() => {
-    if (searchParams.get('tick')) {
-      setTick(searchParams.get('tick') as string);
-      console.log(searchParams.get('amt'))
-      if (searchParams.get('amt')) {
-        setAmt(Number(searchParams.get('amt')));
+    if (searchParams.get("tick")) {
+      setTick(searchParams.get("tick") as string);
+      console.log(searchParams.get("amt"));
+      if (searchParams.get("amt")) {
+        setAmt(Number(searchParams.get("amt")));
       } else {
-        updateAmount(searchParams.get('tick') as string)
+        updateAmount(searchParams.get("tick") as string);
       }
     }
-    
-  }, [amt, searchParams, updateAmount])
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    try {
-      const item = window.localStorage.getItem("localWallet");
-      if (item) {
-        setWallet(JSON.parse(item));
-      }
-    } catch (error) {
-      console.error("Error accessing localStorage:", error);
-      return;
-    }
-  }, []);
-
-  const [inscriptionAddress, setInscriptionAddress] = useState("");
-  const [fee, setFee] = useState(0);
+  }, [amt, searchParams, updateAmount]);
 
   const [orderList, setOrderList] = useLocalStorage<any[]>("orderList", []);
 
@@ -127,7 +99,8 @@ const Brc20Minter = () => {
     _content: string,
     _addr: string,
     _receipt: string,
-    _fee: number
+    _fee: number,
+    _protocol: string,
   ) => {
     setOrderList([
       {
@@ -137,6 +110,7 @@ const Brc20Minter = () => {
         inscriptionAddress: _addr,
         receiveAddress: _receipt,
         fee: _fee,
+        protocol: _protocol,
         status: "waiting_pay",
         createdAt: new Date().valueOf(),
       },
@@ -167,60 +141,73 @@ const Brc20Minter = () => {
   };
 
   const handleMint = async () => {
-    // const reslut = await onMint(tick, Number(amt), to);
-    const st = generatePrivateKey();
-    setSecret(st);
-    console.log(st);
-    const reslut = generateInscribe(st, tick, Number(amt), network);
-    console.log(tick, Number(amt), reslut);
-    setInscriptionAddress(reslut);
-    setFee(feeRate[speed] * 230 + 546);
     setIsConfirmPay(true);
   };
 
   const handleTransfer = async (priv: string) => {
-    console.log("spend amount", Number(fee));
-    setIsInscribing(true);
+
     try {
-      // const newTask = await createTextInscriptionTask(
-      //   userId,
-      //   secret,
-      //   generateBrc20MintContent(tick, Number(amt)),
-      //   to,
-      //   inscriptionAddress,
-      //   "waiting_pay"
-      // );
-      // console.log("inscriptionAddress", inscriptionAddress);
-      // console.log(newTask);
+      const secret = generatePrivateKey();
+      const _inscriptionAddress = generateInscribe(
+        secret,
+        tick,
+        Number(amt),
+        network,
+        protocol
+      );
+      let base = 546;
+      if (protocol === "brc-100") {
+        base = 294;
+      }
+      const fee = feeRate[speed] * 154 + base
+
+      setIsInscribing(true);
       const taskId = uuidV4();
       addOrderAndJumpToOrderList(
         taskId,
         secret,
-        generateBrc20MintContent(tick, Number(amt)),
-        inscriptionAddress,
+        generateBrc20MintContent(tick, Number(amt), protocol),
+        _inscriptionAddress,
         to,
-        fee
+        fee,
+        protocol
       );
       const txid = await sendBTCByPriv(
         priv,
         fee,
         feeRate[speed],
-        inscriptionAddress,
+        _inscriptionAddress,
         generateAddressFromPubKey(wallet?.publicKey as string, network),
         network
       );
       changeOrderStatus(taskId, "waiting_mint");
-      await inscribeBrc20Mint(
-        secret,
-        generateBrc20MintContent(tick, Number(amt)),
-        txid,
-        0,
-        fee,
-        to,
-        network
-      );
-      changeOrderStatus(taskId, "minted");
-      router.push("/orders");
+      if (protocol === "brc-20") {
+        await inscribeBrc20Mint(
+          secret,
+          generateBrc20MintContent(tick, Number(amt), protocol),
+          txid,
+          0,
+          fee,
+          to,
+          546,
+          network,
+        );
+        changeOrderStatus(taskId, "minted");
+        router.push("/orders");
+      } else if (protocol === "brc-100") {
+        await inscribeBrc20Mint(
+          secret,
+          generateBrc20MintContent(tick, Number(amt), protocol),
+          txid,
+          0,
+          fee,
+          to,
+          294,
+          network
+        );
+        changeOrderStatus(taskId, "minted");
+        router.push("/orders");
+      }
     } catch (error: any) {
       console.log(error);
       toastError(error.message);
@@ -231,41 +218,29 @@ const Brc20Minter = () => {
   return (
     <>
       <div className="flex flex-col w-full items-center text-black">
-        {/* <div className="max-w-xl mb-4 flex flex-col w-full bg-white p-4 rounded-3xl">
-          <h3 className="text-xl font-semibold">Hot Token</h3>
-          <table className="mt-4">
-            <thead>
-              <tr className="text-left">
-                <th>Tick</th>
-                <th>Max Amount</th>
-                <th>Holders</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className=" font-light">
-                <td>mice</td>
-                <td>1000</td>
-                <td>10</td>
-                <td>
-                  <Button
-                    theme="outline"
-                    className="p-1 px-3"
-                    text="Mint"
-                    onClick={() => {
-                      setTick("mice");
-                      setAmt("1000");
-                    }}
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div> */}
         <div className="max-w-xl flex flex-col w-full bg-white p-4 rounded-3xl border-2 border-black shadow-[5px_5px_black]">
-          <h2 className="text-xl font-semibold">BRC20 Minter</h2>
+          <h2 className="text-xl font-semibold">Minter</h2>
           <div className="flex flex-col mt-2">
-            <span className="mb-1 text-xs">币种（tick）</span>
+            <span className="mb-1 text-xs">协议（protocol）</span>
+            <div className="flex mt-1">
+              <Button
+                theme={protocol === "brc-20" ? "primary" : "outline"}
+                text="BRC-20"
+                className="rounded-none px-2 !py-0 text-xs h-5"
+                onClick={() => {
+                  setProtocol("brc-20");
+                }}
+              />
+              <Button
+                theme={protocol === "brc-100" ? "primary" : "outline"}
+                text="BRC-100"
+                className="ml-2 rounded-none px-2 !py-0 text-xs h-5"
+                onClick={() => {
+                  setProtocol("brc-100");
+                }}
+              />
+            </div>
+            <span className="mt-4 mb-1 text-xs">币种（tick）</span>
             <input
               type="text"
               className="mt-1 input border border-slate-300 bg-transparent px-2 py-1 rounded h-fit focus:border-black !outline-none"
@@ -279,12 +254,14 @@ const Brc20Minter = () => {
           <div className="flex flex-col mt-4">
             <span className="mb-1 text-xs flex">
               铸造数量（amt）
-              {isQueryTick && <ReactSVG className="ml-1 w-4 h-4" src="/assets/loading2.svg" />}
+              {isQueryTick && (
+                <ReactSVG className="ml-1 w-4 h-4" src="/assets/loading2.svg" />
+              )}
             </span>
             <input
               type="number"
               value={amt}
-              disabled
+              disabled={protocol === 'brc-20'}
               className="mt-1 input border border-slate-300 bg-transparent px-2 py-1 rounded h-fit focus:border-black !outline-none"
               onChange={(e) => {
                 setAmt(e.target.value ? Number(e.target.value) : 0);
@@ -330,7 +307,6 @@ const Brc20Minter = () => {
           </div>
           <div className="flex flex-col pt-8 ">
             <Button
-              disabled={isMinting}
               theme="primary"
               text={t("inscribe.mint")}
               onClick={handleMint}
@@ -342,29 +318,7 @@ const Brc20Minter = () => {
           onConfirm={handleTransfer}
           onClose={() => setIsConfirmPay(false)}
         />
-        <Modal visible={isInscribing} onClose={() => {}}>
-          <div className="flex justify-center items-center p-6 bg-white rounded-lg">
-            <div role="status">
-              <svg
-                aria-hidden="true"
-                className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-black"
-                viewBox="0 0 100 101"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                  fill="currentFill"
-                />
-              </svg>
-              <span className="sr-only">Loading...</span>
-            </div>
-          </div>
-        </Modal>
+        <LoadingModal visible={isInscribing} />
       </div>
     </>
   );

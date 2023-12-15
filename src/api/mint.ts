@@ -100,6 +100,7 @@ export const inscribeBrc20Mint = async (
   vout: number,
   amount: number,
   receiveAddress: string,
+  outputAmount: number,
   network: "main" | "testnet"
 ) => {
   const resp = await fetch("/api/brc20/inscribe", {
@@ -112,6 +113,7 @@ export const inscribeBrc20Mint = async (
       amount,
       receiveAddress,
       network,
+      outputAmount,
     }),
     headers: {
       "Content-Type": "application/json",
