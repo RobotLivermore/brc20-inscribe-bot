@@ -41,7 +41,8 @@
     "spendAmount": "花费金额",
     "passwordError": "密码错误",
     "settingTitle": "设置",
-    "networkSelector": "网络选择"
+    "networkSelector": "网络选择",
+    "viewMnemonic": "查看助记词"
   },
   "inscribe": {
     "mint": "铸造"

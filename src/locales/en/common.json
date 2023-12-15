@@ -42,7 +42,8 @@
     "passwordError": "Password Error",
     "settingTitle": "Settings",
     "networkSelector": "Network Selector",
-    "deleteWallet": "Delete Wallet"
+    "deleteWallet": "Delete Wallet",
+    "viewMnemonic": "View Recovery"
   },
   "inscribe": {
     "mint": "Mint"

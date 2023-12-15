@@ -6,7 +6,6 @@ import { generateAddressFromPubKey } from "@/utils/address";
 import { abbreviateText } from "@/utils/formater";
 import Button from "@/ui/Button";
 import { useTranslation } from "react-i18next";
-import useToast from "@/hooks/useToast";
 import ReceiveModal from "./ReceiveModal";
 import SendModal from "./SendModal";
 import { fetchChainBalance, fetchAddressUtxo } from "@/api/chain";
@@ -14,6 +13,7 @@ import { ReactSVG } from "react-svg";
 import TransactionConfirm from "../TransactionConfirm";
 import useNetwork from "@/hooks/useNetwork";
 import useCopy from "@/hooks/useCopy";
+import ViewMnemonicModal from "./ViewMnemonicModal";
 
 interface Props {
   wallet: WalletCore;
@@ -72,8 +72,6 @@ const WalletOperator: FC<Props> = ({ wallet, onDeleteWallet }) => {
     }
   }, [address, updateUtxos]);
 
-  const toast = useToast();
-
   const [isOpenReceiveModal, setIsOpenReceiveModal] = useState<boolean>(false);
 
   const handleClose = useCallback(() => {
@@ -86,6 +84,8 @@ const WalletOperator: FC<Props> = ({ wallet, onDeleteWallet }) => {
   }, []);
 
   const [isConfirmDelete, setIsConfirmDelete] = useState<boolean>(false);
+
+  const [isViewMnemonic, setIsViewMnemonic] = useState<boolean>(false);
 
   return (
     <div className="flex flex-col w-full max-w-[calc(100vw - 32px)] bg-white rounded-xl border border-black shadow-[5px_5px_black]">
@@ -156,7 +156,7 @@ const WalletOperator: FC<Props> = ({ wallet, onDeleteWallet }) => {
           <div className="w-full mt-4 flex flex-col">
             <label className="text-sm">{t("wallet.networkSelector")}</label>
             <select
-              className="select select-primary w-full mt-2"
+              className="select select-primary w-full mt-2 rounded-full"
               value={network}
               onChange={(e) => {
                 setNetwork(e.target.value as "main" | "testnet");
@@ -166,6 +166,15 @@ const WalletOperator: FC<Props> = ({ wallet, onDeleteWallet }) => {
               <option value="testnet">Testnet</option>
             </select>
           </div>
+
+          <Button
+            theme="outline"
+            text={t("wallet.viewMnemonic")}
+            className="mt-10 w-full"
+            onClick={() => {
+              setIsViewMnemonic(true);
+            }}
+          />
 
           <Button
             theme="danger"
@@ -199,6 +208,12 @@ const WalletOperator: FC<Props> = ({ wallet, onDeleteWallet }) => {
         onConfirm={() => {
           onDeleteWallet();
           setIsConfirmDelete(false);
+        }}
+      />
+      <ViewMnemonicModal
+        visible={isViewMnemonic}
+        onClose={() => {
+          setIsViewMnemonic(false);
         }}
       />
     </div>
