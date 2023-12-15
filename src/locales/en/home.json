@@ -1,7 +1,8 @@
 {
   "home": {
     "mint": "Mint",
-    "hotMints": "Hot Mints",
+    "hotBRC20Mints": "Hot BRC-20 Mints",
+    "hotBRC100Mints": "Hot BRC-100 Mints",
     "tick": "Ttick",
     "holders": "Holders",
     "process": "Process",

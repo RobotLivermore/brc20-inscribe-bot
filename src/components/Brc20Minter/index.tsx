@@ -89,6 +89,9 @@ const Brc20Minter = () => {
         updateAmount(searchParams.get("tick") as string);
       }
     }
+    if (searchParams.get('protocol') && ['brc-20', 'brc-100'].includes(searchParams.get('protocol') as string)) {
+      setProtocol(searchParams.get('protocol') as 'brc-20' | 'brc-100')
+    }
   }, [amt, searchParams, updateAmount]);
 
   const [orderList, setOrderList] = useLocalStorage<any[]>("orderList", []);
