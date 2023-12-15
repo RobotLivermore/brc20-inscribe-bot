@@ -15,12 +15,12 @@ const MintButton: FC<Props> = ({ tick, limit, text }) => {
   const router = useRouter();
 
   const handleMint = useCallback(async () => {
-    if (localStorage.getItem("localwallet")) {
-      router.push(`/inscribe?tick=${tick}&amt=${Number(limit)}`);
-    } else {
-      toast(t("home.pleaseSetUpWallet"));
-      router.push("/wallet");
-    }
+    // if (localStorage.getItem("localwallet")) {
+    router.push(`/inscribe?tick=${tick}&amt=${Number(limit)}`);
+    // } else {
+    //   toast(t("home.pleaseSetUpWallet"));
+    //   router.push("/wallet");
+    // }
   }, [router, tick, limit, toast, t]);
   return (
     <Button
