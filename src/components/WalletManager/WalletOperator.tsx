@@ -88,7 +88,7 @@ const WalletOperator: FC<Props> = ({ wallet, onDeleteWallet }) => {
   const [isViewMnemonic, setIsViewMnemonic] = useState<boolean>(false);
 
   return (
-    <div className="flex flex-col w-full max-w-[calc(100vw - 32px)] bg-white rounded-xl border border-black shadow-[5px_5px_black]">
+    <div className="flex flex-col w-full max-w-[calc(100vw - 32px)] bg-white rounded-xl border-2 border-black shadow-[5px_5px_black]">
       <div className="border-b border-black w-full flex justify-center items-center h-16 relative ">
         <span
           className="py-1 px-2 rounded-md cursor-pointer active:bg-gray-100"

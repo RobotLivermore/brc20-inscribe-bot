@@ -13,7 +13,7 @@ export default async function OrdersPage({ params: { lang } }: any) {
       resources={resources}
     >
       <div className="sm:max-w-[420px] w-full relative h-[100vh] sm:h-[800px] sm:max-h-[80vh] border-black border-0 sm:border overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 py-2 px-4 w-full bg-white font-bold border-b border-black">
+        <div className="absolute top-0 left-0 right-0 py-2 px-4 w-full bg-white font-bold border-b-2 border-black">
           历史订单
         </div>
 
