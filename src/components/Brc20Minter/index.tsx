@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import useLocalStorage from "@/hooks/useLocalstorage";
 import useMint from "./useMint";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { WalletCore } from "@/types/wallet";
 import { useTranslation } from "react-i18next";
 import { fetchChainFeeRate } from "@/api/chain";
@@ -31,12 +31,15 @@ const Brc20Minter = () => {
   const router = useRouter();
   const { isMinting, onMint } = useMint();
   const { t } = useTranslation();
+  const searchParams = useSearchParams()
 
   const [secret, setSecret] = React.useState("");
   const [tick, setTick] = React.useState("");
   const [amt, setAmt] = React.useState(0);
   const [to, setTo] = React.useState("");
   const toastError = useToast("error");
+
+
 
   const initDataUnsafe = useTgInitData();
 
@@ -71,8 +74,8 @@ const Brc20Minter = () => {
   const [wallet, setWallet] = useState<WalletCore | null>(null);
 
   const [isQueryTick, getIsQueryTick, setIsQueryTick] = useLoading();
-  const updateAmount = useCallback(async () => {
-    if (tick && !getIsQueryTick()) {
+  const updateAmount = useCallback(async (tick: string) => {
+    if (!getIsQueryTick()) {
       try {
         setIsQueryTick(true);
         const res = await fetchTickInfo(tick);
@@ -83,7 +86,20 @@ const Brc20Minter = () => {
         setIsQueryTick(false);
       }
     }
-  }, [getIsQueryTick, setIsQueryTick, tick]);
+  }, [getIsQueryTick, setIsQueryTick]);
+
+  useEffect(() => {
+    if (searchParams.get('tick')) {
+      setTick(searchParams.get('tick') as string);
+      console.log(searchParams.get('amt'))
+      if (searchParams.get('amt')) {
+        setAmt(Number(searchParams.get('amt')));
+      } else {
+        updateAmount(searchParams.get('tick') as string)
+      }
+    }
+    
+  }, [amt, searchParams, updateAmount])
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -257,7 +273,7 @@ const Brc20Minter = () => {
               onChange={(e) => {
                 setTick(e.target.value);
               }}
-              onBlur={updateAmount}
+              onBlur={() => updateAmount(tick)}
             />
           </div>
           <div className="flex flex-col mt-4">
