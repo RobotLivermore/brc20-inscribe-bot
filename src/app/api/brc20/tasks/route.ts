@@ -1,5 +1,4 @@
 import { NextRequest } from "next/server";
-import { sql } from "@vercel/postgres";
 
 import { PrismaClient } from "@prisma/client";
 

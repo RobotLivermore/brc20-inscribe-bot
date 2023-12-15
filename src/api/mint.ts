@@ -120,3 +120,15 @@ export const inscribeBrc20Mint = async (
   const data = await resp.json();
   return data?.data;
 };
+
+
+export const fetchTickInfo = async (tick: string) => {
+  const resp = await fetch(`/api/brc20/tick/${tick}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await resp.json();
+  return data?.data;
+}

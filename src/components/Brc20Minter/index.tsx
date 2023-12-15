@@ -1,20 +1,19 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-// import Image from "next/image";
+import Image from "next/image";
 import useLocalStorage from "@/hooks/useLocalstorage";
 import useMint from "./useMint";
 import { useRouter } from "next/navigation";
 import { WalletCore } from "@/types/wallet";
 import { useTranslation } from "react-i18next";
-import { twMerge } from "tailwind-merge";
 import { fetchChainFeeRate } from "@/api/chain";
 import Button from "@/ui/Button";
 import TransactionConfirm from "../TransactionConfirm";
 import { sendBTCByPriv } from "@/utils/transaction";
 import { generateAddressFromPubKey } from "@/utils/address";
 import useToast from "@/hooks/useToast";
-import { createTextInscriptionTask, inscribeBrc20Mint } from "@/api/mint";
+import { inscribeBrc20Mint, fetchTickInfo } from "@/api/mint";
 import {
   generateInscribe,
   generatePrivateKey,
@@ -24,26 +23,9 @@ import Modal from "@/ui/Modal";
 import useNetwork from "@/hooks/useNetwork";
 import useTgInitData from "@/hooks/useTgInitData";
 import { v4 as uuidV4 } from "uuid";
-
-const SpeedItem: React.FC<{
-  level: string;
-  fee: number;
-  active: boolean;
-  onClick: () => void;
-}> = ({ level, fee, active, onClick }) => {
-  const cls = twMerge(
-    "flex flex-col items-center justify-between mt-2 rounded py-2 text-sm cursor-pointer",
-    !active
-      ? "border border-black text-black"
-      : "border border-black bg-black text-white"
-  );
-  return (
-    <div className={cls} onClick={onClick}>
-      <span>{level}</span>
-      <span>{fee} sat/vB</span>
-    </div>
-  );
-};
+import SpeedItem from "./SpeedItem";
+import useLoading from "@/hooks/useLoading";
+import { ReactSVG } from "react-svg";
 
 const Brc20Minter = () => {
   const router = useRouter();
@@ -52,7 +34,7 @@ const Brc20Minter = () => {
 
   const [secret, setSecret] = React.useState("");
   const [tick, setTick] = React.useState("");
-  const [amt, setAmt] = React.useState("");
+  const [amt, setAmt] = React.useState(0);
   const [to, setTo] = React.useState("");
   const toastError = useToast("error");
 
@@ -87,6 +69,21 @@ const Brc20Minter = () => {
   }, [updateFeeRate]);
 
   const [wallet, setWallet] = useState<WalletCore | null>(null);
+
+  const [isQueryTick, getIsQueryTick, setIsQueryTick] = useLoading();
+  const updateAmount = useCallback(async () => {
+    if (tick && !getIsQueryTick()) {
+      try {
+        setIsQueryTick(true);
+        const res = await fetchTickInfo(tick);
+        setAmt(Number(res.limit));
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsQueryTick(false);
+      }
+    }
+  }, [getIsQueryTick, setIsQueryTick, tick]);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -255,30 +252,35 @@ const Brc20Minter = () => {
             <span className="mb-1 text-xs">币种（tick）</span>
             <input
               type="text"
-              className="border border-slate-300 bg-transparent px-2 py-1 rounded"
+              className="mt-1 input border border-slate-300 bg-transparent px-2 py-1 rounded h-fit focus:border-black !outline-none"
               value={tick}
               onChange={(e) => {
                 setTick(e.target.value);
               }}
+              onBlur={updateAmount}
             />
           </div>
-          <div className="flex flex-col mt-2">
-            <span className="mb-1 text-xs">铸造数量（amt）</span>
+          <div className="flex flex-col mt-4">
+            <span className="mb-1 text-xs flex">
+              铸造数量（amt）
+              {isQueryTick && <ReactSVG className="ml-1 w-4 h-4" src="/assets/loading2.svg" />}
+            </span>
             <input
               type="number"
               value={amt}
-              className="border border-slate-300 bg-transparent px-2 py-1 rounded"
+              disabled
+              className="mt-1 input border border-slate-300 bg-transparent px-2 py-1 rounded h-fit focus:border-black !outline-none"
               onChange={(e) => {
-                setAmt(e.target.value);
+                setAmt(e.target.value ? Number(e.target.value) : 0);
               }}
             />
           </div>
-          <div className="flex flex-col mt-2">
+          <div className="flex flex-col mt-4">
             <span className="mb-1 text-xs">接收地址（to）</span>
             <input
               type="text"
               value={to}
-              className="border border-slate-300 bg-transparent px-2 py-1 rounded"
+              className="mt-1 input border border-slate-300 bg-transparent px-2 py-1 rounded h-fit focus:border-black !outline-none"
               onChange={(e) => {
                 setTo(e.target.value);
               }}
